@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  database:
+    container_name: database
+    image: postgres:13.0
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./config/database/setup.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  memory:
+    container_name: memory
+    image: redis:alpine
+    environment:
+      REDIS_PASSWORD: session
+    ports:
+      - "6379:6379"

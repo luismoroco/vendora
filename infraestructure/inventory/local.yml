@@ -1,0 +1,21 @@
+environment_context: local
+
+# database
+database_name: database
+database_image: postgres:13.0
+database_user: admin
+database_password: admin123
+database_default_db: postgres
+database_port: 5432
+
+database_vendora: vendora
+
+# memory
+memory_name: memory
+memory_image: redis:alpine
+memory_password: session
+memory_port: 6379
+
+# reverse_proxy
+reverse_proxy_name: nginx
+reverse_proxy_worker_connections: 1024

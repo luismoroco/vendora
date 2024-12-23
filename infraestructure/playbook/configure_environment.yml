@@ -1,0 +1,28 @@
+- name: configure environment
+  hosts: localhost
+  become: no
+  vars_files:
+    - ../inventory/local.yml
+  tasks:
+    - name: check directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - ../../config/database
+        - ../../config/reverse_proxy
+
+    - name: configure database
+      template:
+        src: ../templates/config/database/setup.sql.j2
+        dest: ../../config/database/setup.sql
+
+    - name: configure reverse-proxy
+      template:
+        src: ../templates/config/reverse_proxy/nginx.conf.j2
+        dest: ../../config/reverse_proxy/nginx.conf
+
+    - name: configure resources file
+      template:
+        src: ../templates/docker-compose.yml.j2
+        dest: ../../docker-compose.yml
