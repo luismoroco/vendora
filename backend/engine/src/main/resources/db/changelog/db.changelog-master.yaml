@@ -1,0 +1,754 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-update-trigger
+      author: db.vendora.dev
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            dbms: postgresql
+            sql: |
+              CREATE OR REPLACE FUNCTION update_updated_at_column()
+              RETURNS TRIGGER AS $$
+              BEGIN
+                NEW.updated_at = CURRENT_TIMESTAMP;
+                RETURN NEW;
+              END;
+              $$ LANGUAGE plpgsql;
+
+  - changeSet:
+      id: 2-trigram-index-extension
+      author: note.harbor.dev
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            dbms: postgresql
+            sql: |
+              CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+  - changeSet:
+      id: 3-user
+      author: db.vendora.dev
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TYPE user_type AS ENUM ('MANAGER', 'CLIENT');
+
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_type
+                  type: USER_TYPE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TRIGGER update_user_updated_at
+              BEFORE UPDATE ON "user"
+              FOR EACH ROW
+              EXECUTE FUNCTION update_updated_at_column();
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE "user"
+              ADD CONSTRAINT check_first_name_length 
+                CHECK (char_length(first_name) > 1) NOT VALID,
+              ADD CONSTRAINT check_last_name_length 
+                CHECK (char_length(last_name) > 1) NOT VALID,
+              ADD CONSTRAINT check_email_contains_at 
+                CHECK (position('@' IN email) > 0) NOT VALID;
+
+  - changeSet:
+      id: 4-currency
+      author: db.vendora.dev
+      changes:
+        - createTable:
+            tableName: currency
+            columns:
+              - column:
+                  name: currency_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: short_name
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              INSERT INTO currency
+              VALUES
+                (1, 'PEN', 'Peruvian soles'),
+                (2, 'USD', 'American dollar');
+
+  - changeSet:
+      id: 4-product
+      author: db.vendora.dev
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: product_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: NUMERIC(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: archived
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: featured
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE product
+              ADD CONSTRAINT check_name_length 
+                CHECK (char_length(name) > 1) NOT VALID,
+              ADD CONSTRAINT check_description_length 
+                CHECK (char_length(description) > 1) NOT VALID,
+              ADD CONSTRAINT check_price_greater_than
+                CHECK (price >= 0) NOT VALID;
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE INDEX index_product_on_name ON product USING gin (name gin_trgm_ops);
+              CREATE TRIGGER update_product_updated_at BEFORE
+              UPDATE
+              ON "product" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+        - createTable:
+            tableName: product_image
+            columns:
+              - column:
+                  name: product_image_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: INT
+                  constraints:
+                    nullable: false
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE product_image
+              ADD CONSTRAINT check_url_length 
+                CHECK (char_length(url) > 1) NOT VALID;
+
+        - addForeignKeyConstraint:
+            baseTableName: product_image
+            baseColumnNames: product_id
+            constraintName: fk_product_product_id_product_image
+            referencedTableName: product
+            referencedColumnNames: product_id
+
+  - changeSet:
+      id: 5-category
+      author: db.vendora.dev
+      changes:
+        - createTable:
+            tableName: category
+            columns:
+              - column:
+                  name: category_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: featured
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE category
+              ADD CONSTRAINT check_name_length 
+                CHECK (char_length(name) > 1) NOT VALID;
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TRIGGER update_category_updated_at BEFORE
+              UPDATE
+              ON "category" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+        - createTable:
+            tableName: category_image
+            columns:
+              - column:
+                  name: category_image_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE category_image
+              ADD CONSTRAINT check_url_length 
+                CHECK (char_length(url) > 1) NOT VALID;
+
+        - addForeignKeyConstraint:
+            baseTableName: category_image
+            baseColumnNames: category_id
+            constraintName: fk_category_category_id_category_image
+            referencedTableName: category
+            referencedColumnNames: category_id
+
+        - createTable:
+            tableName: category_product
+            columns:
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: category_product
+            baseColumnNames: product_id
+            constraintName: fk_category_product_product_id_product
+            referencedTableName: product
+            referencedColumnNames: product_id
+
+        - addForeignKeyConstraint:
+            baseTableName: category_product
+            baseColumnNames: category_id
+            constraintName: fk_category_product_category_id_category
+            referencedTableName: category
+            referencedColumnNames: category_id
+
+        - addUniqueConstraint:
+            tableName: category_product
+            columnNames: product_id, category_id
+            constraintName: unique_category_product_product_id_category_id
+
+  - changeSet:
+      id: 6-order
+      author: db.vendora.dev
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TYPE order_status_type AS ENUM ('PENDING', 'PAID', 'FAILED');
+
+        - createTable:
+            tableName: order
+            columns:
+              - column:
+                  name: order_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_status_type
+                  type: ORDER_STATUS_TYPE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: NUMERIC(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE "order"
+              ADD CONSTRAINT check_amount_greater_than
+                CHECK (amount >= 0) NOT VALID;
+
+        - addForeignKeyConstraint:
+            baseTableName: order
+            baseColumnNames: user_id
+            constraintName: fk_order_user_id_user
+            referencedTableName: user
+            referencedColumnNames: user_id
+
+        - addForeignKeyConstraint:
+            baseTableName: order
+            baseColumnNames: currency_id
+            constraintName: fk_order_currency_id_currency
+            referencedTableName: currency
+            referencedColumnNames: currency_id
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TRIGGER update_order_updated_at BEFORE
+              UPDATE
+              ON "order" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+        - createTable:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_item_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: unit_price
+                  type: NUMERIC(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE order_item
+              ADD CONSTRAINT check_name_length
+                CHECK (char_length(name) > 1) NOT VALID,   
+              ADD CONSTRAINT check_unit_price_greater_than
+                CHECK (unit_price >= 0) NOT VALID,   
+              ADD CONSTRAINT check_quantity_greater_than
+                CHECK (quantity >= 1) NOT VALID;
+
+        - addForeignKeyConstraint:
+            baseTableName: order_item
+            baseColumnNames: order_id
+            constraintName: fk_order_item_order_id_order
+            referencedTableName: order
+            referencedColumnNames: order_id
+
+        - addForeignKeyConstraint:
+            baseTableName: order_item
+            baseColumnNames: product_id
+            constraintName: fk_order_item_product_id_product
+            referencedTableName: product
+            referencedColumnNames: product_id
+
+  - changeSet:
+      id: 7-payment
+      author: db.vendora.dev
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TYPE payment_method_type AS ENUM ('CARD');
+
+        - createTable:
+            tableName: payment_provider
+            columns:
+              - column:
+                  name: payment_provider_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: payment_method_type
+                  type: PAYMENT_METHOD_TYPE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              INSERT INTO payment_provider
+              VALUES
+                (1, 'CARD', 'STRIPE', true);
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TYPE payment_status_type AS ENUM ('PENDING', 'PAID', 'FAILED', 'CANCELED');
+
+        - createTable:
+            tableName: payment
+            columns:
+              - column:
+                  name: payment_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_provider_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_status_type
+                  type: PAYMENT_STATUS_TYPE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: initialization_data
+                  type: JSONB
+                  constraints:
+                    nullable: true
+              - column:
+                  name: transaction_data
+                  type: JSONB
+                  constraints:
+                    nullable: true
+              - column:
+                  name: paid_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: payment
+            baseColumnNames: order_id
+            constraintName: fk_payment_order_id_order
+            referencedTableName: order
+            referencedColumnNames: order_id
+
+        - addForeignKeyConstraint:
+            baseTableName: payment
+            baseColumnNames: payment_provider_id
+            constraintName: fk_payment_payment_provider_id_payment_provider
+            referencedTableName: payment_provider
+            referencedColumnNames: payment_provider_id
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              CREATE TRIGGER update_payment_updated_at BEFORE
+              UPDATE
+              ON "payment" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+  - changeSet:
+      id: 8-shopping-cart
+      author: db.vendora.dev
+      changes:
+        - createTable:
+            tableName: shopping_cart
+            columns:
+              - column:
+                  name: shopping_cart_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: shopping_cart
+            baseColumnNames: user_id
+            constraintName: fk_shopping_cart_user_id_user
+            referencedTableName: user
+            referencedColumnNames: user_id
+
+        - addUniqueConstraint:
+            tableName: shopping_cart
+            columnNames: user_id
+            constraintName: unique_shopping_cart_user_id
+
+        - createTable:
+            tableName: shopping_cart_item
+            columns:
+              - column:
+                  name: shopping_cart_item_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: shopping_cart_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - sql:
+            dbms: postgresql
+            sql: |
+              ALTER TABLE shopping_cart_item
+              ADD CONSTRAINT check_quantity_greater_than
+                CHECK (quantity >= 1) NOT VALID,   
+              ADD CONSTRAINT check_number_greater_than
+                CHECK (number >= 0) NOT VALID;      
+
+        - addForeignKeyConstraint:
+            baseTableName: shopping_cart_item
+            baseColumnNames: shopping_cart_id
+            constraintName: fk_shopping_cart_item_shopping_cart_id_shopping_cart
+            referencedTableName: shopping_cart
+            referencedColumnNames: shopping_cart_id
+
+        - addForeignKeyConstraint:
+            baseTableName: shopping_cart_item
+            baseColumnNames: product_id
+            constraintName: fk_shopping_cart_item_product_id_product
+            referencedTableName: product
+            referencedColumnNames: product_id
+
+  - changeSet:
+      id: 9-product-like
+      author: db.vendora.dev
+      changes:
+        - createTable:
+            tableName: product_like
+            columns:
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: product_like
+            baseColumnNames: product_id
+            constraintName: fk_product_like_product_id_product
+            referencedTableName: product
+            referencedColumnNames: product_id
+
+        - addForeignKeyConstraint:
+            baseTableName: product_like
+            baseColumnNames: user_id
+            constraintName: fk_product_like_user_id_user
+            referencedTableName: user
+            referencedColumnNames: user_id
+
+        - addUniqueConstraint:
+            tableName: product_like
+            columnNames: product_id, user_id
+            constraintName: unique_product_like_product_id_user_id

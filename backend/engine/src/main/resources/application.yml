@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: vendora-engine
+    version: 0.0.0
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vendora
+    username: admin
+    password: admin123
+    driver-class-name: org.postgresql.Driver
