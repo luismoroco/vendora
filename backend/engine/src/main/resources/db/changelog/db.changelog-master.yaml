@@ -65,6 +65,13 @@ databaseChangeLog:
                   type: TEXT
                   constraints:
                     nullable: false
+                    unique: true
+              - column:
+                  name: username
+                  type: TEXT
+                  constraints:
+                    nullable: false
+                    unique: true
               - column:
                   name: password
                   type: TEXT
@@ -106,33 +113,10 @@ databaseChangeLog:
       id: 4-currency
       author: db.vendora.dev
       changes:
-        - createTable:
-            tableName: currency
-            columns:
-              - column:
-                  name: currency_id
-                  type: BIGINT
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: short_name
-                  type: VARCHAR(3)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: name
-                  type: TEXT
-                  constraints:
-                    nullable: false
-
         - sql:
             dbms: postgresql
             sql: |
-              INSERT INTO currency
-              VALUES
-                (1, 'PEN', 'Peruvian soles'),
-                (2, 'USD', 'American dollar');
+              CREATE TYPE currency AS ENUM ('PEN', 'USD');
 
   - changeSet:
       id: 4-product
@@ -152,6 +136,7 @@ databaseChangeLog:
                   type: TEXT
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: description
                   type: TEXT
@@ -270,6 +255,7 @@ databaseChangeLog:
                   type: TEXT
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: featured
                   type: BOOLEAN
@@ -403,8 +389,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: currency_id
-                  type: BIGINT
+                  name: currency
+                  type: CURRENCY
                   constraints:
                     nullable: false
               - column:
@@ -438,13 +424,6 @@ databaseChangeLog:
             constraintName: fk_order_user_id_user
             referencedTableName: user
             referencedColumnNames: user_id
-
-        - addForeignKeyConstraint:
-            baseTableName: order
-            baseColumnNames: currency_id
-            constraintName: fk_order_currency_id_currency
-            referencedTableName: currency
-            referencedColumnNames: currency_id
 
         - sql:
             dbms: postgresql
@@ -521,38 +500,7 @@ databaseChangeLog:
             dbms: postgresql
             sql: |
               CREATE TYPE payment_method_type AS ENUM ('CARD');
-
-        - createTable:
-            tableName: payment_provider
-            columns:
-              - column:
-                  name: payment_provider_id
-                  type: BIGSERIAL
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: payment_method_type
-                  type: PAYMENT_METHOD_TYPE
-                  constraints:
-                    nullable: false
-              - column:
-                  name: name
-                  type: TEXT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: enabled
-                  type: BOOLEAN
-                  constraints:
-                    nullable: false
-
-        - sql:
-            dbms: postgresql
-            sql: |
-              INSERT INTO payment_provider
-              VALUES
-                (1, 'CARD', 'STRIPE', true);
+              CREATE TYPE payment_provider AS ENUM ('STRIPE_CHECKOUT');
 
         - sql:
             dbms: postgresql
@@ -574,8 +522,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: payment_provider_id
-                  type: BIGINT
+                  name: payment_method_type
+                  type: PAYMENT_METHOD_TYPE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_provider
+                  type: PAYMENT_PROVIDER
                   constraints:
                     nullable: false
               - column:
@@ -617,13 +570,6 @@ databaseChangeLog:
             constraintName: fk_payment_order_id_order
             referencedTableName: order
             referencedColumnNames: order_id
-
-        - addForeignKeyConstraint:
-            baseTableName: payment
-            baseColumnNames: payment_provider_id
-            constraintName: fk_payment_payment_provider_id_payment_provider
-            referencedTableName: payment_provider
-            referencedColumnNames: payment_provider_id
 
         - sql:
             dbms: postgresql
