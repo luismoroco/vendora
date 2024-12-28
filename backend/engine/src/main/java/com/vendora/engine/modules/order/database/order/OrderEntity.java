@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,8 @@ import java.util.Set;
 @Table(name = "order")
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderEntity implements Model<Order> {
+@EqualsAndHashCode(callSuper = true)
+public class OrderEntity extends Model<Order> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "order_id", nullable = false, updatable = false)

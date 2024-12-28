@@ -47,7 +47,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: user_type
-                  type: USER_TYPE
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
@@ -385,12 +385,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: order_status_type
-                  type: ORDER_STATUS_TYPE
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
                   name: currency
-                  type: CURRENCY
+                  type: VARCHAR(3)
                   constraints:
                     nullable: false
               - column:
@@ -523,17 +523,17 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: payment_method_type
-                  type: PAYMENT_METHOD_TYPE
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
                   name: payment_provider
-                  type: PAYMENT_PROVIDER
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
                   name: payment_status_type
-                  type: PAYMENT_STATUS_TYPE
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -14,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "product_image")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImageEntity implements Model<ProductImage> {
+@EqualsAndHashCode(callSuper = true)
+public class ProductImageEntity extends Model<ProductImage> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_image_id", nullable = false, updatable = false)

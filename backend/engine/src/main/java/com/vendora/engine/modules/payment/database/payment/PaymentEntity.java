@@ -8,6 +8,7 @@ import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -20,7 +21,8 @@ import java.util.Map;
 @Table(name = "payment")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentEntity implements Model<Payment> {
+@EqualsAndHashCode(callSuper = true)
+public class PaymentEntity extends Model<Payment> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "payment_id", nullable = false, updatable = false)

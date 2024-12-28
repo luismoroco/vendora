@@ -1,20 +1,19 @@
 package com.vendora.engine.modules.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import java.time.LocalDateTime;
-
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class User {
-  Long userId;
+  @JsonIgnore Long userId;
   UserType userType;
   String firstName;
   String lastName;
   String email;
   String username;
-  String password;
-  LocalDateTime createdAt;
-  LocalDateTime updatedAt;
+  @JsonIgnore String password;
 }

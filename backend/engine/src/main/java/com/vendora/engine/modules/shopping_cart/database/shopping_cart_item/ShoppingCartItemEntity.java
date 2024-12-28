@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -13,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "shopping_cart_item")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingCartItemEntity implements Model<ShoppingCartItem> {
+@EqualsAndHashCode(callSuper = true)
+public class ShoppingCartItemEntity extends Model<ShoppingCartItem> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "shopping_cart_item_id", nullable = false, updatable = false)

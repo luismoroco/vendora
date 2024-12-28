@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,8 @@ import java.util.Set;
 @Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity implements Model<Product> {
+@EqualsAndHashCode(callSuper = true)
+public class ProductEntity extends Model<Product> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_id", nullable = false, updatable = false)

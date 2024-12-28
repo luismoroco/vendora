@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,8 @@ import java.util.Set;
 @Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryEntity implements Model<Category> {
+@EqualsAndHashCode(callSuper = true)
+public class CategoryEntity extends Model<Category> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "category_id", nullable = false, updatable = false)

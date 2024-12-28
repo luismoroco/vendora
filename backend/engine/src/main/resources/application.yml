@@ -1,3 +1,9 @@
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000
+
 spring:
   application:
     name: vendora-engine
@@ -7,3 +13,28 @@ spring:
     username: admin
     password: admin123
     driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: off
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        globally_quoted_identifiers: true
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
+  data:
+    redis:
+      url: redis://localhost:6379
+      host: localhost
+      password: session
+      port: 6379
+      duration: 24
+      repositories:
+        enabled: false

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -14,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_item")
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemEntity implements Model<OrderItem> {
+@EqualsAndHashCode(callSuper = true)
+public class OrderItemEntity extends Model<OrderItem> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "order_item_id", nullable = false, updatable = false)

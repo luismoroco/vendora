@@ -5,6 +5,7 @@ import com.vendora.engine.modules.category.model.CategoryImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "category_image")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryImageEntity implements Model<CategoryImage> {
+@EqualsAndHashCode(callSuper = true)
+public class CategoryImageEntity extends Model<CategoryImage> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "category_image_id", nullable = false, updatable = false)

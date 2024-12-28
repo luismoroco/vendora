@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +22,8 @@ import java.util.Collections;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity implements Model<User>, UserDetails {
+@EqualsAndHashCode(callSuper = true)
+public class UserEntity extends Model<User> implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id", nullable = false, updatable = false)

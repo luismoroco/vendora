@@ -6,6 +6,7 @@ import com.vendora.engine.modules.shopping_cart.model.ShoppingCart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.Set;
 @Table(name = "shopping_cart")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingCartEntity implements Model<ShoppingCart> {
+@EqualsAndHashCode(callSuper = true)
+public class ShoppingCartEntity extends Model<ShoppingCart> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "shopping_cart_id", nullable = false, updatable = false)

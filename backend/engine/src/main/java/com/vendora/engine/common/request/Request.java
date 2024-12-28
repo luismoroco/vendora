@@ -1,32 +1,29 @@
 package com.vendora.engine.common.request;
 
 import com.vendora.engine.common.mapper.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public interface Request extends Mapper {
-  Logger LOGGER = LoggerFactory.getLogger(Request.class);
-
-  static <K extends Request, T> K builtFrom(T source, Class<K> targetClass) {
-    return MAPPER.map(source, targetClass);
+public class Request<T> implements Mapper<T> {
+  @Override
+  public T map() {
+    return MAPPER.map(this, this.getTargetClass());
   }
 
-  static <K extends Request, T> K builtFrom(T source, Class<K> targetClass, Map<String, Object> overrideKeyValues) {
-    K target = builtFrom(source, targetClass);
+  @Override
+  public T map(Map<String, Object> overrideKeys) {
+    T result = this.map();
 
-    overrideKeyValues.forEach((key, value) -> {
+    overrideKeys.forEach((fieldName, value) -> {
       try {
-        var field = target.getClass().getDeclaredField(key);
+        var field = result.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
-        field.set(target, value);
+        field.set(result, value);
       } catch (NoSuchFieldException | IllegalAccessException e) {
-        LOGGER.error("Error while setting field value [key=%s][error=%s]".formatted(key, e));
-        throw new RuntimeException(e);
+        throw new RuntimeException("Error setting field value: " + fieldName, e);
       }
     });
 
-    return target;
+    return result;
   }
 }
