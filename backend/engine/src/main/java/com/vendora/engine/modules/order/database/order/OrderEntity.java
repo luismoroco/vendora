@@ -1,15 +1,15 @@
 package com.vendora.engine.modules.order.database.order;
 
-import com.vendora.engine.common.model.Model;
+import com.vendora.engine.common.persistence.MappedModel;
 import com.vendora.engine.modules.currency.model.Currency;
 import com.vendora.engine.modules.order.database.order_item.OrderItemEntity;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderStatusType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -20,39 +20,22 @@ import java.util.Set;
 @Table(name = "order")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class OrderEntity extends Model<Order> {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "order_id", nullable = false, updatable = false)
-  private Long orderId;
+public class OrderEntity implements MappedModel<Order> {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long orderId;
+  @NotNull private Long userId;
+  @Enumerated(EnumType.STRING) private OrderStatusType orderStatusType;
+  @Enumerated(EnumType.STRING) private Currency currency;
+  @Positive private Double amount;
 
-  @Column(name = "user_id", nullable = false)
-  private Long userId;
+  @Column(insertable = false) private LocalDateTime createdAt;
+  @Column(insertable = false) private LocalDateTime updatedAt;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "order_status_type", nullable = false)
-  private OrderStatusType orderStatusType;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "currency", nullable = false)
-  private Currency currency;
-
-  @Positive
-  @Column(name = "amount", nullable = false)
-  private Double amount;
-
-  @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false, insertable = false)
-  private LocalDateTime updatedAt;
-
-  @OneToMany(
-    cascade = {
-      CascadeType.ALL
-    },
-    orphanRemoval = true)
-  @JoinColumn(name = "order_id")
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @JoinColumn(name = "orderId")
   private Set<OrderItemEntity> items;
+
+  @Override
+  public Order toModel() {
+    return MAPPER.map(this, Order.class);
+  }
 }

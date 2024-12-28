@@ -10,12 +10,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CacheGateway {
+public class CacheProxy {
   private final CacheManager cacheManager;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CacheGateway.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CacheProxy.class);
 
-  public CacheGateway(
+  public CacheProxy(
     CacheManager cacheManager
   ) {
     this.cacheManager = cacheManager;

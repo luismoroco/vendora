@@ -1,6 +1,5 @@
 package com.vendora.engine.modules.user.database;
 
-import com.vendora.engine.common.model.Model;
 import com.vendora.engine.modules.user.dao.UserDao;
 import com.vendora.engine.modules.user.database.user.UserEntity;
 import com.vendora.engine.modules.user.database.user.UserRepository;
@@ -27,7 +26,7 @@ public class UserDaoPg implements UserDao {
 
   @Override
   public Optional<User> findUserByUsername(String username) {
-    return this.repository.findUserEntityByUsername(username).map(Model::map);
+    return this.repository.findUserEntityByUsername(username).map(UserEntity::toModel);
   }
 
   @Override
@@ -38,6 +37,6 @@ public class UserDaoPg implements UserDao {
   @Override
   public User saveUser(User user) {
     var userEntity = mapper.map(user, UserEntity.class);
-    return this.repository.save(userEntity).map();
+    return this.repository.save(userEntity).toModel();
   }
 }

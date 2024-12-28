@@ -1,13 +1,12 @@
 package com.vendora.engine.modules.user.database.user;
 
-import com.vendora.engine.common.model.Model;
+import com.vendora.engine.common.persistence.MappedModel;
 import com.vendora.engine.modules.user.model.UserType;
 import com.vendora.engine.modules.user.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,42 +21,16 @@ import java.util.Collections;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserEntity extends Model<User> implements UserDetails {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id", nullable = false, updatable = false)
-  private Long userId;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "user_type", nullable = false)
-  private UserType userType;
-
-  @NotBlank
-  @Column(name = "first_name", nullable = false)
-  private String firstName;
-
-  @NotBlank
-  @Column(name = "last_name", nullable = false)
-  private String lastName;
-
-  @NotBlank
-  @Column(name = "email", nullable = false, unique = true)
-  private String email;
-
-  @NotBlank
-  @Column(name = "username", nullable = false, unique = true)
-  private String username;
-
-  @NotBlank
-  @Column(name = "password", nullable = false)
-  private String password;
-
-  @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false, insertable = false)
-  private LocalDateTime updatedAt;
+public class UserEntity implements MappedModel<User>, UserDetails {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long userId;
+  @Enumerated(EnumType.STRING) private UserType userType;
+  @NotBlank private String firstName;
+  @NotBlank private String lastName;
+  @NotBlank private String email;
+  @NotBlank private String username;
+  @NotBlank private String password;
+  @Column(insertable = false) private LocalDateTime createdAt;
+  @Column(insertable = false) private LocalDateTime updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,5 +55,10 @@ public class UserEntity extends Model<User> implements UserDetails {
   @Override
   public boolean isEnabled() {
     return UserDetails.super.isEnabled();
+  }
+
+  @Override
+  public User toModel() {
+    return MAPPER.map(this, User.class);
   }
 }

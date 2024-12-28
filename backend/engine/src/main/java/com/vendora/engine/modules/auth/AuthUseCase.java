@@ -1,7 +1,7 @@
 package com.vendora.engine.modules.auth;
 
-import com.vendora.engine.common.exc.exception.BadRequestException;
-import com.vendora.engine.common.exc.exception.NotFoundException;
+import com.vendora.engine.common.exc.exception.VendoraBadRequestException;
+import com.vendora.engine.common.exc.exception.VendoraNotFoundException;
 import com.vendora.engine.modules.auth.request.LoginRequest;
 import com.vendora.engine.modules.auth.request.SignUpRequest;
 import com.vendora.engine.modules.user.dao.UserDao;
@@ -21,7 +21,7 @@ public class AuthUseCase {
 
   public AuthUseCase(
     @Qualifier("postgresql") UserDao userDao,
-    PasswordEncoder passwordEncoder
+    @Qualifier("BCrypt") PasswordEncoder passwordEncoder
   ) {
     this.userDao = userDao;
     this.passwordEncoder = passwordEncoder;
@@ -30,7 +30,7 @@ public class AuthUseCase {
   public User logIn(LoginRequest request) {
     return this.userDao.findUserByUsername(request.getUsername())
       .orElseThrow(
-        () -> new NotFoundException("User not found")
+        () -> new VendoraNotFoundException("User not found")
       );
   }
 
@@ -38,7 +38,7 @@ public class AuthUseCase {
     if (this.userDao.userExistByUsername(request.getUsername())) {
       LOGGER.warn("Username already exist [username=%s]".formatted(request.getUsername()));
 
-      throw new BadRequestException("Username already exist");
+      throw new VendoraBadRequestException("Username already exist");
     }
 
     var user = User.builder()

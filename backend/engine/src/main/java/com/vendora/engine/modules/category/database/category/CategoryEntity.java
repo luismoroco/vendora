@@ -1,13 +1,13 @@
 package com.vendora.engine.modules.category.database.category;
 
-import com.vendora.engine.common.model.Model;
+import com.vendora.engine.common.persistence.MappedModel;
 import com.vendora.engine.modules.category.database.category_image.CategoryImageEntity;
 import com.vendora.engine.modules.category.model.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -18,31 +18,20 @@ import java.util.Set;
 @Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class CategoryEntity extends Model<Category> {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "category_id", nullable = false, updatable = false)
-  private Long categoryId;
+public class CategoryEntity implements MappedModel<Category> {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long categoryId;
+  @NotBlank private String name;
+  @NotNull private Boolean featured = Boolean.FALSE;
 
-  @NotBlank
-  @Column(name = "name", nullable = false)
-  private String name;
+  @Column(insertable = false) private LocalDateTime createdAt;
+  @Column(insertable = false) private LocalDateTime updatedAt;
 
-  @Column(name = "featured", nullable = false)
-  private Boolean featured = false;
-
-  @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false, insertable = false)
-  private LocalDateTime updatedAt;
-
-  @OneToMany(
-    cascade = {
-      CascadeType.ALL
-    },
-    orphanRemoval = true)
-  @JoinColumn(name = "category_id")
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @JoinColumn(name = "categoryId")
   private Set<CategoryImageEntity> images;
+
+  @Override
+  public Category toModel() {
+    return MAPPER.map(this, Category.class);
+  }
 }

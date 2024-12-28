@@ -1,6 +1,6 @@
 package com.vendora.engine.security.filter;
 
-import com.vendora.engine.cache.CacheGateway;
+import com.vendora.engine.cache.CacheProxy;
 import com.vendora.engine.cache.model.CacheTopic;
 import com.vendora.engine.modules.auth.model.Session;
 import com.vendora.engine.common.util.JwtUtil;
@@ -22,11 +22,11 @@ import java.util.Objects;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
   private final UserDetailsService userDetailsService;
-  private final CacheGateway cacheService;
+  private final CacheProxy cacheService;
 
   public JwtAuthFilter(
     UserDetailsService userDetailsService,
-    CacheGateway cacheService
+    CacheProxy cacheService
   ) {
     this.userDetailsService = userDetailsService;
     this.cacheService = cacheService;

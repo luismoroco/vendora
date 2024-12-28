@@ -1,14 +1,14 @@
 package com.vendora.engine.modules.product.database.product;
 
-import com.vendora.engine.common.model.Model;
+import com.vendora.engine.common.persistence.MappedModel;
 import com.vendora.engine.modules.product.database.product_image.ProductImageEntity;
 import com.vendora.engine.modules.product.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -19,49 +19,25 @@ import java.util.Set;
 @Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ProductEntity extends Model<Product> {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "product_id", nullable = false, updatable = false)
-  private Long productId;
+public class ProductEntity implements MappedModel<Product> {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long productId;
+  @NotBlank private String name;
+  @NotBlank private String description;
+  @Positive private Double price;
+  @NotNull private Boolean enabled = Boolean.TRUE;
+  @NotNull private Boolean archived = Boolean.FALSE;
+  @NotNull private Boolean featured = Boolean.FALSE;
+  @Positive private Integer stock;
 
-  @NotBlank
-  @Column(name = "name", nullable = false)
-  private String name;
+  @Column(insertable = false) private LocalDateTime createdAt;
+  @Column(insertable = false) private LocalDateTime updatedAt;
 
-  @NotBlank
-  @Column(name = "description", nullable = false)
-  private String description;
-
-  @Positive
-  @Column(name = "price", nullable = false)
-  private Double price;
-
-  @Column(name = "enabled", nullable = false)
-  private Boolean enabled = true;
-
-  @Column(name = "archived", nullable = false)
-  private Boolean archived = false;
-
-  @Column(name = "featured", nullable = false)
-  private Boolean featured = false;
-
-  @Positive
-  @Column(name = "stock", nullable = false)
-  private Integer stock;
-
-  @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false, insertable = false)
-  private LocalDateTime updatedAt;
-
-  @OneToMany(
-    cascade = {
-      CascadeType.ALL
-    },
-    orphanRemoval = true)
-  @JoinColumn(name = "product_id")
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @JoinColumn(name = "productId")
   private Set<ProductImageEntity> images;
+
+  @Override
+  public Product toModel() {
+    return MAPPER.map(this, Product.class);
+  }
 }

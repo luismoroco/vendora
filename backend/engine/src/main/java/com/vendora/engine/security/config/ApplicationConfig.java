@@ -1,6 +1,7 @@
 package com.vendora.engine.security.config;
 
 import com.vendora.engine.modules.user.database.user.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +39,7 @@ public class ApplicationConfig {
   }
 
   @Bean
+  @Qualifier("BCrypt")
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
