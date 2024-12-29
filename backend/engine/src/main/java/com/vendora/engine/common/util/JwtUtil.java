@@ -1,10 +1,13 @@
 package com.vendora.engine.common.util;
 
+import com.vendora.engine.common.session.exc.InvalidJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
@@ -45,14 +48,25 @@ public class JwtUtil {
     return getClaimGateway(token, Claims::getSubject);
   }
 
-  private static <T> T getClaimGateway(String token, Function<Claims, T> resolver) {
-    var claims = Jwts
-      .parserBuilder()
-      .setSigningKey(SIGN_IN_KEY)
-      .build()
-      .parseClaimsJws(token)
-      .getBody();
+  private static <T> T getClaimGateway(
+    String token,
+    Function<Claims, T> resolver
+  ) {
+    try {
+      var claims = Jwts
+        .parserBuilder()
+        .setSigningKey(SIGN_IN_KEY)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
 
-    return resolver.apply(claims);
+      return resolver.apply(claims);
+    } catch (MalformedJwtException ex) {
+      throw new InvalidJwtException("Invalid jwt token");
+    } catch (SignatureException ex) {
+      throw new InvalidJwtException("Invalid jwt signature");
+    } catch (IllegalArgumentException ex) {
+      throw new InvalidJwtException("Invalid jwt claim");
+    }
   }
 }

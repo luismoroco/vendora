@@ -4,8 +4,8 @@ import com.vendora.engine.modules.auth.AuthUseCase;
 import com.vendora.engine.modules.auth.web.rest.validator.LoginRestRequest;
 import com.vendora.engine.modules.auth.web.rest.validator.SignUpRestRequest;
 import com.vendora.engine.modules.user.model.User;
-import com.vendora.engine.security.cerberus.Cerberus;
-import com.vendora.engine.security.cerberus.credentials.Credentials;
+import com.vendora.engine.common.scrooge.providers.Scrooge;
+import com.vendora.engine.common.scrooge.Credentials;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
   private final AuthUseCase useCase;
   private final AuthenticationManager authManager;
-  private final Cerberus<? extends Credentials> cerberus;
+  private final Scrooge<? extends Credentials> cerberus;
 
   public AuthController(
     AuthUseCase useCase,
     AuthenticationManager authManager,
-    @Qualifier("Jwt") Cerberus<? extends Credentials> cerberus
+    @Qualifier("Jwt") Scrooge<? extends Credentials> cerberus
   ) {
     this.useCase = useCase;
     this.authManager = authManager;
