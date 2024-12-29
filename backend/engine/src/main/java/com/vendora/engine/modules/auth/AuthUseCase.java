@@ -6,7 +6,6 @@ import com.vendora.engine.modules.auth.request.LoginRequest;
 import com.vendora.engine.modules.auth.request.SignUpRequest;
 import com.vendora.engine.modules.user.dao.UserDao;
 import com.vendora.engine.modules.user.model.User;
-import com.vendora.engine.modules.user.model.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +44,7 @@ public class AuthUseCase {
 
     return this.userDao.saveUser(
       User.builder()
-        .userType(UserType.CLIENT)
+        .userType(request.getUserType())
         .firstName(request.getFirstName())
         .lastName(request.getLastName())
         .email(request.getEmail())

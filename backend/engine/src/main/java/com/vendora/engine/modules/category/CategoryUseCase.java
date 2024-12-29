@@ -3,7 +3,6 @@ package com.vendora.engine.modules.category;
 import com.vendora.engine.common.error.exc.exception.BadRequestException;
 import com.vendora.engine.modules.category.dao.CategoryDao;
 import com.vendora.engine.modules.category.model.Category;
-import com.vendora.engine.modules.category.model.CategoryImage;
 import com.vendora.engine.modules.category.request.CreateCategoryRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,24 +29,12 @@ public class CategoryUseCase {
   public Category createCategory(final CreateCategoryRequest request) {
     this.validateCategoryConstraints(request.getImages().size(), request.getName());
 
-    var items = request.getImages();
-    var images = new HashSet<CategoryImage>(items.size());
-    for (int index = 0; index < items.size(); index++) {
-      images.add(
-        CategoryImage.builder()
-          .url(items.get(index).getUrl())
-          .number(index)
-          .build()
-      );
-    }
+    var category = new Category();
+    category.setName(request.getName());
+    category.setFeatured(request.getFeatured());
+    category.setImages(new HashSet<>());
 
-    return this.dao.saveCategory(
-      Category.builder()
-        .name(request.getName())
-        .featured(request.getFeatured())
-        .images(images)
-        .build()
-    );
+    return this.dao.saveCategory(category);
   }
 
   private void validateCategoryConstraints(Integer imagesLength, String categoryName) {

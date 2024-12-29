@@ -1,9 +1,8 @@
 package com.vendora.engine.modules.category.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
