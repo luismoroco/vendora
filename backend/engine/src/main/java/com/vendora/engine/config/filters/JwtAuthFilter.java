@@ -1,9 +1,9 @@
 package com.vendora.engine.config.filters;
 
-import com.vendora.engine.common.cache.CacheProxy;
+import com.vendora.engine.common.cache.CacheService;
 import com.vendora.engine.common.cache.model.CacheTopic;
 import com.vendora.engine.common.session.model.SessionUser;
-import com.vendora.engine.common.util.JwtUtil;
+import com.vendora.engine.common.util.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,14 +22,17 @@ import java.util.Objects;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
   private final UserDetailsService userDetailsService;
-  private final CacheProxy cacheService;
+  private final CacheService cacheService;
+  private final JwtService jwtService;
 
   public JwtAuthFilter(
     UserDetailsService userDetailsService,
-    CacheProxy cacheService
+    CacheService cacheService,
+    JwtService jwtService
   ) {
     this.userDetailsService = userDetailsService;
     this.cacheService = cacheService;
+    this.jwtService = jwtService;
   }
 
   @Override
@@ -38,14 +41,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     HttpServletResponse response,
     FilterChain filterChain
   ) throws ServletException, IOException {
-    var token = JwtUtil.getHeaderToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+    var token = JwtService.getBearerToken(request.getHeader(HttpHeaders.AUTHORIZATION));
     if (token.isEmpty()) {
       filterChain.doFilter(request, response);
 
       return;
     }
 
-    var username = JwtUtil.getSubject(token.get());
+    var username = this.jwtService.getSubject(token.get());
     this.cacheService.get(CacheTopic.SESSION, username, SessionUser.class)
       .orElseThrow(
         () -> new ServletException("Token not found")
@@ -54,7 +57,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
       var user = this.userDetailsService.loadUserByUsername(username);
 
-      if (JwtUtil.isValid(token.get(), user.getUsername())) {
+      if (this.jwtService.isValid(token.get(), user.getUsername())) {
         var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

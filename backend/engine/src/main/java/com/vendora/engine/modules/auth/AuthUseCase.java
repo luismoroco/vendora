@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AuthUseCase {
@@ -34,6 +35,7 @@ public class AuthUseCase {
       );
   }
 
+  @Transactional
   public User signUp(SignUpRequest request) {
     if (this.userDao.userExistByUsername(request.getUsername())) {
       LOGGER.warn("Username already exist [username=%s]".formatted(request.getUsername()));
@@ -41,16 +43,15 @@ public class AuthUseCase {
       throw new BadRequestException("Username already exist");
     }
 
-    var user = User.builder()
-      .userType(UserType.CLIENT)
-      .firstName(request.getFirstName())
-      .lastName(request.getLastName())
-      .email(request.getEmail())
-      .username(request.getUsername())
-      .password(this.passwordEncoder.encode(request.getPassword()))
-      .build();
-
-    return this.userDao.saveUser(user);
+    return this.userDao.saveUser(
+      User.builder()
+        .userType(UserType.CLIENT)
+        .firstName(request.getFirstName())
+        .lastName(request.getLastName())
+        .email(request.getEmail())
+        .username(request.getUsername())
+        .password(this.passwordEncoder.encode(request.getPassword()))
+        .build()
+    );
   }
-
 }
