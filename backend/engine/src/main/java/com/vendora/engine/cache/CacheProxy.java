@@ -24,6 +24,8 @@ public class CacheProxy {
   public <V, K extends String> void put(CacheTopic topic, K key, V value) {
     var cache = this.cacheManager.getCache(topic.toString());
     cache.put(key, value);
+
+    LOGGER.info("Value added [topic=%s][key=%s][value=%s]".formatted(topic.toString(), key, value));
   }
 
   public <V, K extends String> Optional<V> get(CacheTopic topic, K key, Class<V> valueType) {
@@ -36,6 +38,7 @@ public class CacheProxy {
       return Optional.empty();
     }
 
+    LOGGER.info("Cache hit [topic=%s][key=%s][value=%s]".formatted(topic.toString(), key, v));
     return Optional.of(v);
   }
 

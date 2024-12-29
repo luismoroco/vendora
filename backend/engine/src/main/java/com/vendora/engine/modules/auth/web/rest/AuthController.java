@@ -1,12 +1,11 @@
 package com.vendora.engine.modules.auth.web.rest;
 
 import com.vendora.engine.modules.auth.AuthUseCase;
-import com.vendora.engine.modules.auth.model.Session;
 import com.vendora.engine.modules.auth.web.rest.validator.LoginRestRequest;
 import com.vendora.engine.modules.auth.web.rest.validator.SignUpRestRequest;
 import com.vendora.engine.modules.user.model.User;
 import com.vendora.engine.security.cerberus.Cerberus;
-import com.vendora.engine.security.cerberus.engines.JwtCerberus;
+import com.vendora.engine.security.cerberus.credentials.Credentials;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -20,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
   private final AuthUseCase useCase;
   private final AuthenticationManager authManager;
-  private final Cerberus<Session, JwtCerberus> cerberus;
+  private final Cerberus<? extends Credentials> cerberus;
 
   public AuthController(
     AuthUseCase useCase,
     AuthenticationManager authManager,
-    @Qualifier("Jwt") Cerberus<Session, JwtCerberus> cerberus
+    @Qualifier("Jwt") Cerberus<? extends Credentials> cerberus
   ) {
     this.useCase = useCase;
     this.authManager = authManager;
@@ -33,37 +32,38 @@ public class AuthController {
   }
 
   @PostMapping("/log-in")
-  public ResponseEntity<Session> logInUser(
-    @Valid @RequestBody LoginRestRequest restRequest
+  public ResponseEntity<? extends Credentials> logInUser(
+    @Valid @RequestBody final LoginRestRequest payload
   ) {
-    this.authenticate(restRequest);
+    this.authenticate(payload);
 
-    var user = this.useCase.logIn(restRequest.adapt());
+    var user = this.useCase.logIn(payload.buildRequest());
     return this.performAuthorization(user);
   }
 
   @PostMapping("/sign-up")
-  public ResponseEntity<Session> signUp(
-    @Valid @RequestBody SignUpRestRequest payload
+  public ResponseEntity<? extends Credentials> signUp(
+    @Valid @RequestBody final SignUpRestRequest payload
   ) {
-    var user = this.useCase.signUp(payload.adapt());
+    var user = this.useCase.signUp(payload.buildRequest());
     return this.performAuthorization(user);
   }
 
   @PutMapping("/log-out")
   public ResponseEntity<?> logOut() {
-    this.cerberus.context().destroyKeys();
+    this.cerberus.setContext();
 
+    this.cerberus.destroyKeys();
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  private void authenticate(LoginRestRequest restRequest) {
-    var auth = new UsernamePasswordAuthenticationToken(restRequest.getUsername(), restRequest.getPassword());
+  private void authenticate(LoginRestRequest payload) {
+    var auth = new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword());
     authManager.authenticate(auth);
   }
 
-  private ResponseEntity<Session> performAuthorization(User user) {
-    var session = this.cerberus.generateKeys(user);
-    return ResponseEntity.ok(session);
+  private ResponseEntity<? extends Credentials> performAuthorization(User user) {
+    var credentials = this.cerberus.generateKeys(user);
+    return ResponseEntity.ok(credentials);
   }
 }

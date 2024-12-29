@@ -3,10 +3,11 @@ package com.vendora.engine.security.cerberus.engines;
 import com.vendora.engine.cache.CacheProxy;
 import com.vendora.engine.cache.model.CacheTopic;
 import com.vendora.engine.common.exc.exception.VendoraUnauthorizedException;
+import com.vendora.engine.common.session.model.SessionUser;
 import com.vendora.engine.common.util.JwtUtil;
-import com.vendora.engine.modules.auth.model.Session;
 import com.vendora.engine.modules.user.model.User;
 import com.vendora.engine.security.cerberus.Cerberus;
+import com.vendora.engine.security.cerberus.credentials.types.JwtCredentials;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Qualifier("Jwt")
-public class JwtCerberus implements Cerberus<Session, JwtCerberus> {
+public class JwtCerberus implements Cerberus<JwtCredentials> {
   private final CacheProxy cacheProxy;
 
   private UserDetails user;
@@ -28,24 +29,22 @@ public class JwtCerberus implements Cerberus<Session, JwtCerberus> {
   }
 
   @Override
-  public JwtCerberus context() {
+  public void setContext() {
     this.context = SecurityContextHolder.getContext();
     this.user = (UserDetails) this.context.getAuthentication().getPrincipal();
-
-    return this;
   }
 
   @Override
-  public <U extends User> Session generateKeys(U u) {
+  public <U extends User> JwtCredentials generateKeys(U u) {
     var token = JwtUtil.buildToken(u.getUsername());
-    var session = Session.builder()
-      .token(token)
+    var session = SessionUser.builder()
       .userId(u.getUserId())
       .userType(u.getUserType())
+      .email(u.getEmail())
       .build();
 
     this.cacheProxy.put(CacheTopic.SESSION, u.getUsername(), session);
-    return session;
+    return new JwtCredentials(token);
   }
 
   @Override
@@ -55,8 +54,8 @@ public class JwtCerberus implements Cerberus<Session, JwtCerberus> {
   }
 
   @Override
-  public Session retrieveKeys() {
-    return this.cacheProxy.get(CacheTopic.SESSION, this.user.getUsername(), Session.class)
+  public SessionUser retrieveKeys() {
+    return this.cacheProxy.get(CacheTopic.SESSION, this.user.getUsername(), SessionUser.class)
       .orElseThrow(
         () -> new VendoraUnauthorizedException("Session not found")
       );

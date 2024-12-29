@@ -10,12 +10,12 @@ public interface RequestAdapter<T> {
   ModelMapper MAPPER = new ModelMapper();
   Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
-  default T adapt() {
+  default T buildRequest() {
     return MAPPER.map(this, this.getTargetClass());
   }
 
   default T constructRequest(Map<String, Object> overrideKeys) {
-    T result = this.adapt();
+    T result = this.buildRequest();
 
     overrideKeys.forEach((key, value) -> {
       try {

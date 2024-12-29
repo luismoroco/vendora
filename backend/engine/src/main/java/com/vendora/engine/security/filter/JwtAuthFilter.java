@@ -2,6 +2,7 @@ package com.vendora.engine.security.filter;
 
 import com.vendora.engine.cache.CacheProxy;
 import com.vendora.engine.cache.model.CacheTopic;
+import com.vendora.engine.common.session.model.SessionUser;
 import com.vendora.engine.modules.auth.model.Session;
 import com.vendora.engine.common.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -46,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     var username = JwtUtil.getSubject(token.get());
-    this.cacheService.get(CacheTopic.SESSION, username, Session.class)
+    this.cacheService.get(CacheTopic.SESSION, username, SessionUser.class)
       .orElseThrow(
         () -> new ServletException("Token not found")
       );
