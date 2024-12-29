@@ -14,7 +14,7 @@ public interface RequestAdapter<T> {
     return MAPPER.map(this, this.getTargetClass());
   }
 
-  default T constructRequest(Map<String, Object> overrideKeys) {
+  default T buildRequest(Map<String, Object> overrideKeys) {
     T result = this.buildRequest();
 
     overrideKeys.forEach((key, value) -> {

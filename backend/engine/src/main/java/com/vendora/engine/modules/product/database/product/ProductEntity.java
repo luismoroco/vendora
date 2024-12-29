@@ -20,17 +20,28 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductEntity implements MappedModel<Product> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long productId;
-  @NotBlank private String name;
-  @NotBlank private String description;
-  @Positive private Double price;
-  @NotNull private Boolean enabled = Boolean.TRUE;
-  @NotNull private Boolean archived = Boolean.FALSE;
-  @NotNull private Boolean featured = Boolean.FALSE;
-  @Positive private Integer stock;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long productId;
+  @NotBlank
+  private String name;
+  @NotBlank
+  private String description;
+  @Positive
+  private Double price;
+  @NotNull
+  private Boolean enabled = Boolean.TRUE;
+  @NotNull
+  private Boolean archived = Boolean.FALSE;
+  @NotNull
+  private Boolean featured = Boolean.FALSE;
+  @Positive
+  private Integer stock;
 
-  @Column(insertable = false) private LocalDateTime createdAt;
-  @Column(insertable = false) private LocalDateTime updatedAt;
+  @Column(insertable = false)
+  private LocalDateTime createdAt;
+  @Column(insertable = false)
+  private LocalDateTime updatedAt;
 
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
   @JoinColumn(name = "productId")

@@ -22,17 +22,27 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentEntity implements MappedModel<Payment> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long paymentId;
-  @NotNull private Long orderId;
-  @Enumerated(EnumType.STRING) private PaymentMethodType paymentMethodType;
-  @Enumerated(EnumType.STRING) private PaymentProvider paymentProvider;
-  @Enumerated(EnumType.STRING) private PaymentStatusType paymentStatusType;
-  @JdbcTypeCode(SqlTypes.JSON) private Map<String, Object> initializationData;
-  @JdbcTypeCode(SqlTypes.JSON) private Map<String, Object> transactionData;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long paymentId;
+  @NotNull
+  private Long orderId;
+  @Enumerated(EnumType.STRING)
+  private PaymentMethodType paymentMethodType;
+  @Enumerated(EnumType.STRING)
+  private PaymentProvider paymentProvider;
+  @Enumerated(EnumType.STRING)
+  private PaymentStatusType paymentStatusType;
+  @JdbcTypeCode(SqlTypes.JSON)
+  private Map<String, Object> initializationData;
+  @JdbcTypeCode(SqlTypes.JSON)
+  private Map<String, Object> transactionData;
   private LocalDateTime paidAt;
 
-  @Column(insertable = false) private LocalDateTime createdAt;
-  @Column(insertable = false) private LocalDateTime updatedAt;
+  @Column(insertable = false)
+  private LocalDateTime createdAt;
+  @Column(insertable = false)
+  private LocalDateTime updatedAt;
 
   @Override
   public Payment toModel() {

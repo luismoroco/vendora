@@ -15,7 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCartItemEntity implements MappedModel<ShoppingCartItem> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long shoppingCartItemId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long shoppingCartItemId;
   @NotNull Long shoppingCartId;
   @NotNull Long productId;
   @Positive Integer quantity;

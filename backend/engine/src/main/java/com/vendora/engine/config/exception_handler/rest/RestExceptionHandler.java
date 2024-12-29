@@ -1,9 +1,9 @@
 package com.vendora.engine.config.exception_handler.rest;
 
-import com.vendora.engine.common.error.model.ApiError;
 import com.vendora.engine.common.error.exc.exception.BadRequestException;
 import com.vendora.engine.common.error.exc.exception.NotFoundException;
 import com.vendora.engine.common.error.exc.exception.UnauthorizedException;
+import com.vendora.engine.common.error.model.ApiError;
 import com.vendora.engine.common.session.exc.InvalidJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -11,9 +11,8 @@ import java.util.Optional;
 
 @Service
 public class CacheService {
-  private final CacheManager cacheManager;
-
   private static final Logger LOGGER = LoggerFactory.getLogger(CacheService.class);
+  private final CacheManager cacheManager;
 
   public CacheService(
     CacheManager cacheManager

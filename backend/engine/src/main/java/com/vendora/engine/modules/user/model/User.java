@@ -9,11 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 public class User {
-  @JsonIgnore Long userId;
+  @JsonIgnore
+  Long userId;
   UserType userType;
   String firstName;
   String lastName;
   String email;
   String username;
-  @JsonIgnore String password;
+  @JsonIgnore
+  String password;
 }

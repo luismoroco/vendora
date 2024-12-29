@@ -16,12 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemEntity implements MappedModel<OrderItem> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long orderItemId;
-  @NotNull private Long orderId;
-  @NotNull private Long productId;
-  @NotBlank private String name;
-  @Positive private Double unitPrice;
-  @Positive private Integer quantity;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long orderItemId;
+  @NotNull
+  private Long orderId;
+  @NotNull
+  private Long productId;
+  @NotBlank
+  private String name;
+  @Positive
+  private Double unitPrice;
+  @Positive
+  private Integer quantity;
 
   @Override
   public OrderItem toModel() {

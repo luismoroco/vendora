@@ -17,8 +17,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCartEntity implements MappedModel<ShoppingCart> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long shoppingCartId;
-  @NotNull private Long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long shoppingCartId;
+  @NotNull
+  private Long userId;
 
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
   @JoinColumn(name = "shoppingCartId")

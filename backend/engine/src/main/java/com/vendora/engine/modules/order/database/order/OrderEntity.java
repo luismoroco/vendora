@@ -21,14 +21,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderEntity implements MappedModel<Order> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long orderId;
-  @NotNull private Long userId;
-  @Enumerated(EnumType.STRING) private OrderStatusType orderStatusType;
-  @Enumerated(EnumType.STRING) private Currency currency;
-  @Positive private Double amount;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long orderId;
+  @NotNull
+  private Long userId;
+  @Enumerated(EnumType.STRING)
+  private OrderStatusType orderStatusType;
+  @Enumerated(EnumType.STRING)
+  private Currency currency;
+  @Positive
+  private Double amount;
 
-  @Column(insertable = false) private LocalDateTime createdAt;
-  @Column(insertable = false) private LocalDateTime updatedAt;
+  @Column(insertable = false)
+  private LocalDateTime createdAt;
+  @Column(insertable = false)
+  private LocalDateTime updatedAt;
 
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
   @JoinColumn(name = "orderId")

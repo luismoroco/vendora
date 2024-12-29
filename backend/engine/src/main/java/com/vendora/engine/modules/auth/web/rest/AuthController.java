@@ -1,11 +1,11 @@
 package com.vendora.engine.modules.auth.web.rest;
 
+import com.vendora.engine.common.scrooge.Credentials;
+import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.auth.AuthUseCase;
 import com.vendora.engine.modules.auth.web.rest.validator.LoginRestRequest;
 import com.vendora.engine.modules.auth.web.rest.validator.SignUpRestRequest;
 import com.vendora.engine.modules.user.model.User;
-import com.vendora.engine.common.scrooge.providers.Scrooge;
-import com.vendora.engine.common.scrooge.Credentials;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
   private final AuthUseCase useCase;
   private final AuthenticationManager authManager;
-  private final Scrooge<? extends Credentials> cerberus;
+  private final Scrooge<? extends Credentials> scrooge;
 
   public AuthController(
     AuthUseCase useCase,
     AuthenticationManager authManager,
-    @Qualifier("Jwt") Scrooge<? extends Credentials> cerberus
+    @Qualifier("Jwt") Scrooge<? extends Credentials> scrooge
   ) {
     this.useCase = useCase;
     this.authManager = authManager;
-    this.cerberus = cerberus;
+    this.scrooge = scrooge;
   }
 
   @PostMapping("/log-in")
@@ -51,9 +51,9 @@ public class AuthController {
 
   @PutMapping("/log-out")
   public ResponseEntity<?> logOut() {
-    this.cerberus.setContext();
+    this.scrooge.setContext();
 
-    this.cerberus.destroyKeys();
+    this.scrooge.destroyKeys();
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
@@ -63,7 +63,7 @@ public class AuthController {
   }
 
   private ResponseEntity<? extends Credentials> performAuthorization(User user) {
-    var credentials = this.cerberus.generateKeys(user);
+    var credentials = this.scrooge.generateKeys(user);
     return ResponseEntity.ok(credentials);
   }
 }

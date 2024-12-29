@@ -16,10 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductImageEntity implements MappedModel<ProductImage> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long productImageId;
-  @NotNull private Long productId;
-  @NotBlank private String url;
-  @Positive private Integer number;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long productImageId;
+  @NotNull
+  private Long productId;
+  @NotBlank
+  private String url;
+  @Positive
+  private Integer number;
 
   @Override
   public ProductImage toModel() {

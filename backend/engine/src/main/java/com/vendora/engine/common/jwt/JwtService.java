@@ -20,17 +20,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+  private static final String BEARER_AUTH_PREFIX = "Bearer ";
   @Value("${application.security.jwt.secret-key}")
   private String SECRET_KEY;
-
   @Value("${application.security.jwt.expiration}")
   private Long JWT_EXPIRATION;
-
-  private static final String BEARER_AUTH_PREFIX = "Bearer ";
-
-  private Key getSignInKey() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
-  }
 
   public static Optional<String> getBearerToken(String header) {
     if (StringUtils.hasText(header) && header.startsWith(BEARER_AUTH_PREFIX)) {
@@ -38,6 +32,10 @@ public class JwtService {
     }
 
     return Optional.empty();
+  }
+
+  private Key getSignInKey() {
+    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
   }
 
   public String buildToken(String subject) {

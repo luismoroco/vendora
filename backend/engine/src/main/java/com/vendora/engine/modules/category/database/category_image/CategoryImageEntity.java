@@ -14,10 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryImageEntity implements MappedModel<CategoryImage> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long categoryImageId;
-  @NotNull private Long categoryId;
-  @NotNull private String url;
-  @NotNull private Integer number;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long categoryImageId;
+  @NotNull
+  private Long categoryId;
+  @NotNull
+  private String url;
+  @NotNull
+  private Integer number;
 
   @Override
   public CategoryImage toModel() {

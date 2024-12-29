@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vendora.engine.common.cache.CacheService;
 import com.vendora.engine.common.cache.model.CacheTopic;
 import com.vendora.engine.common.error.model.ApiError;
+import com.vendora.engine.common.jwt.JwtService;
 import com.vendora.engine.common.session.exc.InvalidJwtException;
 import com.vendora.engine.common.session.model.SessionUser;
-import com.vendora.engine.common.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,16 +66,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         var user = this.userDetailsService.loadUserByUsername(username);
 
         if (this.jwtService.isValid(token.get(), user.getUsername())) {
+          var securityContext = SecurityContextHolder.createEmptyContext();
+
           var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
           auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-          SecurityContextHolder.getContext().setAuthentication(auth);
+          securityContext.setAuthentication(auth);
+          SecurityContextHolder.setContext(securityContext);
         }
       }
 
       filterChain.doFilter(request, response);
     } catch (InvalidJwtException e) {
-      this.handleError(response, HttpStatus.UNAUTHORIZED, e);
+      this.handleError(response, HttpStatus.BAD_REQUEST, e);
     } catch (RuntimeException e) {
       handleError(response, HttpStatus.INTERNAL_SERVER_ERROR, e);
     }

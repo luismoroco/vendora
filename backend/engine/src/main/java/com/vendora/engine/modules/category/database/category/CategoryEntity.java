@@ -19,12 +19,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryEntity implements MappedModel<Category> {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long categoryId;
-  @NotBlank private String name;
-  @NotNull private Boolean featured = Boolean.FALSE;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long categoryId;
+  @NotBlank
+  private String name;
+  @NotNull
+  private Boolean featured = Boolean.FALSE;
 
-  @Column(insertable = false) private LocalDateTime createdAt;
-  @Column(insertable = false) private LocalDateTime updatedAt;
+  @Column(insertable = false)
+  private LocalDateTime createdAt;
+  @Column(insertable = false)
+  private LocalDateTime updatedAt;
 
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
   @JoinColumn(name = "categoryId")

@@ -1,8 +1,8 @@
 package com.vendora.engine.modules.user.database.user;
 
 import com.vendora.engine.common.persistence.MappedModel;
-import com.vendora.engine.modules.user.model.UserType;
 import com.vendora.engine.modules.user.model.User;
+import com.vendora.engine.modules.user.model.UserType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,39 +23,49 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity implements MappedModel<User>, UserDetails {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long userId;
-  @Enumerated(EnumType.STRING) private UserType userType;
-  @NotBlank private String firstName;
-  @NotBlank private String lastName;
-  @NotBlank private String email;
-  @NotBlank private String username;
-  @NotBlank private String password;
-  @Column(insertable = false) private LocalDateTime createdAt;
-  @Column(insertable = false) private LocalDateTime updatedAt;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long userId;
+  @Enumerated(EnumType.STRING)
+  private UserType userType;
+  @NotBlank
+  private String firstName;
+  @NotBlank
+  private String lastName;
+  @NotBlank
+  private String email;
+  @NotBlank
+  private String username;
+  @NotBlank
+  private String password;
+  @Column(insertable = false)
+  private LocalDateTime createdAt;
+  @Column(insertable = false)
+  private LocalDateTime updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + this.userType));
+    return List.of(new SimpleGrantedAuthority("ROLE_" + this.userType.name()));
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    return UserDetails.super.isAccountNonExpired();
+    return Boolean.TRUE;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return UserDetails.super.isAccountNonLocked();
+    return Boolean.TRUE;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return UserDetails.super.isCredentialsNonExpired();
+    return Boolean.TRUE;
   }
 
   @Override
   public boolean isEnabled() {
-    return UserDetails.super.isEnabled();
+    return Boolean.TRUE;
   }
 
   @Override

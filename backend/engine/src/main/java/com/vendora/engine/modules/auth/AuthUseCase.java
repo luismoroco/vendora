@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AuthUseCase {
+  private static final Logger LOGGER = LoggerFactory.getLogger(AuthUseCase.class);
   private final UserDao userDao;
   private final PasswordEncoder passwordEncoder;
-  private static final Logger LOGGER = LoggerFactory.getLogger(AuthUseCase.class);
 
   public AuthUseCase(
     @Qualifier("postgresql") UserDao userDao,
