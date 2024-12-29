@@ -1,4 +1,4 @@
-package com.vendora.engine.common.util;
+package com.vendora.engine.common.jwt;
 
 import com.vendora.engine.common.session.exc.InvalidJwtException;
 import io.jsonwebtoken.Claims;

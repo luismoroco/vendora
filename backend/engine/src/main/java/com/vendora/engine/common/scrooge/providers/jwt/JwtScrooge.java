@@ -5,7 +5,7 @@ import com.vendora.engine.common.cache.model.CacheTopic;
 import com.vendora.engine.common.error.exc.exception.UnauthorizedException;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.common.session.model.SessionUser;
-import com.vendora.engine.common.util.JwtService;
+import com.vendora.engine.common.jwt.JwtService;
 import com.vendora.engine.modules.user.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,8 +24,8 @@ public class JwtScrooge implements Scrooge<JwtCredentials> {
 
   public JwtScrooge(
     CacheService cacheService,
-    JwtService jwtService)
-  {
+    JwtService jwtService
+  ) {
     this.cacheService = cacheService;
     this.jwtService = jwtService;
   }

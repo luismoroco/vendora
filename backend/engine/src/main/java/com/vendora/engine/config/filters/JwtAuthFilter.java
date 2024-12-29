@@ -6,7 +6,7 @@ import com.vendora.engine.common.cache.model.CacheTopic;
 import com.vendora.engine.common.error.model.ApiError;
 import com.vendora.engine.common.session.exc.InvalidJwtException;
 import com.vendora.engine.common.session.model.SessionUser;
-import com.vendora.engine.common.util.JwtService;
+import com.vendora.engine.common.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
