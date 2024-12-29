@@ -1,26 +1,25 @@
 package com.vendora.engine.modules.order.database.order_item;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vendora.engine.common.persistence.ModelAdapter;
+import com.vendora.engine.modules.order.database.order.OrderEntity;
 import com.vendora.engine.modules.order.model.OrderItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "order_item")
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemEntity implements MappedModel<OrderItem> {
+public class OrderItemEntity implements ModelAdapter<OrderItem> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long orderItemId;
-  @NotNull
-  private Long orderId;
   @NotNull
   private Long productId;
   @NotBlank
@@ -29,6 +28,11 @@ public class OrderItemEntity implements MappedModel<OrderItem> {
   private Double unitPrice;
   @Positive
   private Integer quantity;
+
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "orderId")
+  private OrderEntity order;
 
   @Override
   public OrderItem toModel() {

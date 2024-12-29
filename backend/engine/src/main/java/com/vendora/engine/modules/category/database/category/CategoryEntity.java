@@ -1,24 +1,23 @@
 package com.vendora.engine.modules.category.database.category;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.category.database.category_image.CategoryImageEntity;
 import com.vendora.engine.modules.category.model.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryEntity implements MappedModel<Category> {
+public class CategoryEntity implements ModelAdapter<Category> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long categoryId;
@@ -32,8 +31,7 @@ public class CategoryEntity implements MappedModel<Category> {
   @Column(insertable = false)
   private LocalDateTime updatedAt;
 
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-  @JoinColumn(name = "categoryId")
+  @OneToMany(mappedBy = "category", cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<CategoryImageEntity> images;
 
   @Override

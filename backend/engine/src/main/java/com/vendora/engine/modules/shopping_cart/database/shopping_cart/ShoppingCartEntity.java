@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.shopping_cart.database.shopping_cart;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.shopping_cart.database.shopping_cart_item.ShoppingCartItemEntity;
 import com.vendora.engine.modules.shopping_cart.model.ShoppingCart;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "shopping_cart")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingCartEntity implements MappedModel<ShoppingCart> {
+public class ShoppingCartEntity implements ModelAdapter<ShoppingCart> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long shoppingCartId;

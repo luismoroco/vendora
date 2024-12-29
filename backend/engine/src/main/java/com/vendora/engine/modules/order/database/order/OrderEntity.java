@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.order.database.order;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.currency.model.Currency;
 import com.vendora.engine.modules.order.database.order_item.OrderItemEntity;
 import com.vendora.engine.modules.order.model.Order;
@@ -8,19 +8,18 @@ import com.vendora.engine.modules.order.model.OrderStatusType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "order")
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderEntity implements MappedModel<Order> {
+public class OrderEntity implements ModelAdapter<Order> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long orderId;
@@ -38,8 +37,7 @@ public class OrderEntity implements MappedModel<Order> {
   @Column(insertable = false)
   private LocalDateTime updatedAt;
 
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-  @JoinColumn(name = "orderId")
+  @OneToMany(mappedBy = "order" , cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<OrderItemEntity> items;
 
   @Override

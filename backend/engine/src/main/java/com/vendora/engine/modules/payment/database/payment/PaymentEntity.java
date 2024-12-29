@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.payment.database.payment;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.model.PaymentMethodType;
 import com.vendora.engine.modules.payment.model.PaymentStatusType;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Table(name = "payment")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentEntity implements MappedModel<Payment> {
+public class PaymentEntity implements ModelAdapter<Payment> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long paymentId;

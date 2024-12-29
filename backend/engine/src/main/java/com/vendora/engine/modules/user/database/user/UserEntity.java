@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.user.database.user;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.user.model.User;
 import com.vendora.engine.modules.user.model.UserType;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity implements MappedModel<User>, UserDetails {
+public class UserEntity implements ModelAdapter<User>, UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long userId;

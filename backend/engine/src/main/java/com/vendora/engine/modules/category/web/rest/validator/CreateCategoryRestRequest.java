@@ -4,13 +4,12 @@ import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.category.request.CreateCategoryRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCategoryRestRequest implements RequestAdapter<CreateCategoryRequest> {

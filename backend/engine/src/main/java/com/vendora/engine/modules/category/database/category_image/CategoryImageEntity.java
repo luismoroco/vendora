@@ -1,28 +1,32 @@
 package com.vendora.engine.modules.category.database.category_image;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vendora.engine.common.persistence.ModelAdapter;
+import com.vendora.engine.modules.category.database.category.CategoryEntity;
 import com.vendora.engine.modules.category.model.CategoryImage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "category_image")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryImageEntity implements MappedModel<CategoryImage> {
+public class CategoryImageEntity implements ModelAdapter<CategoryImage> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long categoryImageId;
   @NotNull
-  private Long categoryId;
-  @NotNull
   private String url;
   @NotNull
   private Integer number;
+
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "categoryId")
+  private CategoryEntity category;
 
   @Override
   public CategoryImage toModel() {

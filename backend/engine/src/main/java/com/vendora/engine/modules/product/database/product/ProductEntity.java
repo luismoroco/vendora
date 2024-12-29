@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.product.database.product;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.product.database.product_image.ProductImageEntity;
 import com.vendora.engine.modules.product.model.Product;
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity implements MappedModel<Product> {
+public class ProductEntity implements ModelAdapter<Product> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long productId;

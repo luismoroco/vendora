@@ -1,6 +1,6 @@
 package com.vendora.engine.modules.product.database.product_image;
 
-import com.vendora.engine.common.persistence.MappedModel;
+import com.vendora.engine.common.persistence.ModelAdapter;
 import com.vendora.engine.modules.product.model.ProductImage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "product_image")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImageEntity implements MappedModel<ProductImage> {
+public class ProductImageEntity implements ModelAdapter<ProductImage> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long productImageId;
