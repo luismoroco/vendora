@@ -3,13 +3,12 @@ package com.vendora.engine.modules.category.web.rest.validator;
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.category.request.UpdateCategoryRequest;
 import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateCategoryRestRequest implements RequestAdapter<UpdateCategoryRequest> {

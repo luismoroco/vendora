@@ -1,10 +1,10 @@
 package com.vendora.engine.modules.category.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetCategoryByIdRequest {

@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-  private static final String[] PUBLIC_ROUTES = {"/api/v1/products/**"};
+  private static final String[] PUBLIC_ROUTES = {"/api/v1/products/**", "/api/v1/categories/**"};
   private static final String[] AUTH_ROUTES = {"/api/v1/auth/**"};
   private static final String[] PRIVATE_ROUTES = { "/api/v1/**" };
   private final JwtAuthFilter jwtAuthFilter;

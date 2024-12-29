@@ -26,7 +26,7 @@ public class CategoryEntity implements ModelAdapter<Category> {
   @NotNull
   private Boolean featured = Boolean.FALSE;
 
-  @Column(insertable = false)
+  @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
   @Column(insertable = false)
   private LocalDateTime updatedAt;
