@@ -71,7 +71,11 @@ public class JwtService {
         .getBody();
 
       return resolver.apply(claims);
-    } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
+    } catch (
+      MalformedJwtException |
+      SignatureException |
+      IllegalArgumentException e
+    ) {
       throw new InvalidJwtException("Invalid jwt token");
     }
   }
