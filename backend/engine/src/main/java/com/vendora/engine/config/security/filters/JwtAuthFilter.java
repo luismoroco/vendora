@@ -1,4 +1,4 @@
-package com.vendora.engine.config.filters;
+package com.vendora.engine.config.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vendora.engine.common.cache.CacheService;

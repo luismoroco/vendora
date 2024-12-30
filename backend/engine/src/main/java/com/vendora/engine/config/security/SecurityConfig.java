@@ -1,6 +1,6 @@
 package com.vendora.engine.config.security;
 
-import com.vendora.engine.config.filters.JwtAuthFilter;
+import com.vendora.engine.config.security.filters.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

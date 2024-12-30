@@ -7,7 +7,7 @@ import com.vendora.engine.modules.order.model.OrderItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Getter
@@ -24,9 +24,9 @@ public class OrderItemEntity implements ModelAdapter<OrderItem> {
   private Long productId;
   @NotBlank
   private String name;
-
+  @NotNull @PositiveOrZero
   private Double unitPrice;
-
+  @NotNull @PositiveOrZero
   private Integer quantity;
 
   @JsonIgnore

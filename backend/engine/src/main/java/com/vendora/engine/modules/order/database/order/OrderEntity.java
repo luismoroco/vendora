@@ -7,6 +7,7 @@ import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderStatusType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,10 +29,10 @@ public class OrderEntity implements ModelAdapter<Order> {
   private OrderStatusType orderStatusType;
   @Enumerated(EnumType.STRING)
   private Currency currency;
-
+  @NotNull @PositiveOrZero
   private Double amount;
 
-  @Column(insertable = false)
+  @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
   @Column(insertable = false)
   private LocalDateTime updatedAt;
