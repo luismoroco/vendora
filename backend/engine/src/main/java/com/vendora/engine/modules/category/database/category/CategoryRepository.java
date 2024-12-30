@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
@@ -32,4 +33,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
   Optional<CategoryEntity> getCategoryEntityByCategoryId(Long categoryId);
 
   boolean existsByCategoryId(Long categoryId);
+
+  Set<CategoryEntity> getAllByCategoryIdIn(List<Long> categoryIds);
 }

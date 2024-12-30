@@ -37,7 +37,8 @@ public class UserEntity implements ModelAdapter<User>, UserDetails {
   private String username;
   @NotBlank
   private String password;
-  @Column(insertable = false)
+
+  @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
   @Column(insertable = false)
   private LocalDateTime updatedAt;

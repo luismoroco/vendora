@@ -4,6 +4,7 @@ import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.category.request.GetCategoriesRequest;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.util.List;
@@ -14,13 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 public class GetCategoriesRestRequest implements RequestAdapter<GetCategoriesRequest> {
   @Nullable
-  String name;
+  private String name;
+
   @Nullable
-  Boolean featured;
+  private Boolean featured;
+
   @Nullable
-  List<Long> categoryIds;
-  @NotNull Integer page;
-  @NotNull Integer size;
+  private List<Long> categoryIds;
+
+  @NotNull @Positive
+  private Integer page;
+
+  @NotNull @Positive
+  private Integer size;
 
   @Override
   public Class<GetCategoriesRequest> getTargetClass() {

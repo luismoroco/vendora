@@ -24,9 +24,9 @@ public class OrderItemEntity implements ModelAdapter<OrderItem> {
   private Long productId;
   @NotBlank
   private String name;
-  @Positive
+
   private Double unitPrice;
-  @Positive
+
   private Integer quantity;
 
   @JsonIgnore

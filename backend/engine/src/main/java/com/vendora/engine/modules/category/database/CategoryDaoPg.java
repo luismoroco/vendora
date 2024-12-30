@@ -12,7 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Qualifier("postgresql")
@@ -53,7 +56,7 @@ public class CategoryDaoPg implements CategoryDao {
     Integer size
   ) {
     return this.repository.getCategories(
-      name == null ? "" : name,
+      Objects.isNull(name) ? "" : name,
       featured,
       categoryIds,
       PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "updatedAt"))
@@ -73,5 +76,13 @@ public class CategoryDaoPg implements CategoryDao {
   @Override
   public void deleteCategoriesById(List<Long> categoryIds) {
     this.repository.deleteAllById(categoryIds);
+  }
+
+  @Override
+  public Set<Category> getCategoriesById(List<Long> categoryIds) {
+    return this.repository.getAllByCategoryIdIn(categoryIds)
+      .stream()
+      .map(CategoryEntity::toModel)
+      .collect(Collectors.toSet());
   }
 }

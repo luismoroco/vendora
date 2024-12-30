@@ -13,11 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateCategoryRestRequest implements RequestAdapter<UpdateCategoryRequest> {
   @Nullable
-  String name;
+  private String name;
+
   @Nullable
-  Boolean featured;
+  private Boolean featured;
+
   @Nullable
-  List<CreateCategoryImageRestRequest> images;
+  private List<CreateCategoryImageRestRequest> images;
 
   @Override
   public Class<UpdateCategoryRequest> getTargetClass() {

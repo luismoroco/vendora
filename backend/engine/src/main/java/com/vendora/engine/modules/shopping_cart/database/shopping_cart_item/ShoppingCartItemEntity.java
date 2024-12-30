@@ -20,8 +20,8 @@ public class ShoppingCartItemEntity implements ModelAdapter<ShoppingCartItem> {
   Long shoppingCartItemId;
   @NotNull Long shoppingCartId;
   @NotNull Long productId;
-  @Positive Integer quantity;
-  @Positive Integer number;
+   Integer quantity;
+   Integer number;
 
   @Override
   public ShoppingCartItem toModel() {

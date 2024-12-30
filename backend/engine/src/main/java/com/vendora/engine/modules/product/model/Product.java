@@ -1,11 +1,15 @@
 package com.vendora.engine.modules.product.model;
 
+import com.vendora.engine.modules.category.model.Category;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
@@ -17,8 +21,7 @@ public class Product {
   Boolean archived;
   Boolean featured;
   Integer stock;
-  LocalDateTime createdAt;
-  LocalDateTime updatedAt;
 
   Set<ProductImage> images;
+  Set<Category> categories;
 }

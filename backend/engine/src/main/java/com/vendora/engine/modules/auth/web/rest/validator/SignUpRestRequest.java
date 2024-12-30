@@ -6,33 +6,32 @@ import com.vendora.engine.modules.user.model.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpRestRequest implements RequestAdapter<SignUpRequest> {
   @NotNull
-  UserType userType;
+  private UserType userType;
 
   @NotBlank(message = "FirstName cannot be missing or empty")
-  String firstName;
+  private String firstName;
 
   @NotBlank(message = "LastName cannot be missing or empty")
-  String lastName;
+  private String lastName;
 
   @NotBlank(message = "Email is required")
   @Email(message = "Must be a well-formed email address")
-  String email;
+  private String email;
 
   @NotBlank(message = "Email cannot be missing or empty")
   @Email(message = "Must be a well-formed email address")
-  String username;
+  private String username;
 
   @NotBlank(message = "Password cannot be missing or empty")
-  String password;
+  private String password;
 
   @Override
   public Class<SignUpRequest> getTargetClass() {

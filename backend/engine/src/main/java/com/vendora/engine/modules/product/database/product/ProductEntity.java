@@ -1,20 +1,20 @@
 package com.vendora.engine.modules.product.database.product;
 
 import com.vendora.engine.common.persistence.ModelAdapter;
+import com.vendora.engine.modules.category.database.category.CategoryEntity;
 import com.vendora.engine.modules.product.database.product_image.ProductImageEntity;
 import com.vendora.engine.modules.product.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
@@ -27,7 +27,7 @@ public class ProductEntity implements ModelAdapter<Product> {
   private String name;
   @NotBlank
   private String description;
-  @Positive
+  @PositiveOrZero
   private Double price;
   @NotNull
   private Boolean enabled = Boolean.TRUE;
@@ -35,17 +35,27 @@ public class ProductEntity implements ModelAdapter<Product> {
   private Boolean archived = Boolean.FALSE;
   @NotNull
   private Boolean featured = Boolean.FALSE;
-  @Positive
+  @PositiveOrZero
   private Integer stock;
 
-  @Column(insertable = false)
+  @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
   @Column(insertable = false)
   private LocalDateTime updatedAt;
 
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-  @JoinColumn(name = "productId")
+  @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<ProductImageEntity> images;
+
+  @ManyToMany(
+    fetch = FetchType.LAZY,
+    cascade = { CascadeType.MERGE, CascadeType.REFRESH }
+  )
+  @JoinTable(
+    name = "category_product",
+    joinColumns = @JoinColumn(name = "product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id")
+  )
+  private Set<CategoryEntity> categories;
 
   @Override
   public Product toModel() {

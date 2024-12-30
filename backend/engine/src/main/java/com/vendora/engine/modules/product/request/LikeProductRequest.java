@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.category.request;
+package com.vendora.engine.modules.product.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetCategoryByIdRequest {
-  private Long categoryId;
+public class LikeProductRequest {
+  private Long userId;
+  private Long productId;
 }

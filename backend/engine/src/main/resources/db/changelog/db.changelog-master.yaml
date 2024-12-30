@@ -670,6 +670,12 @@ databaseChangeLog:
             tableName: product_like
             columns:
               - column:
+                  name: product_like_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
                   name: product_id
                   type: BIGINT
                   constraints:

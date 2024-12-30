@@ -15,8 +15,10 @@ import java.util.List;
 public class CreateCategoryRestRequest implements RequestAdapter<CreateCategoryRequest> {
   @NotBlank
   private String name;
+
   @NotNull
   private Boolean featured;
+
   @NotNull
   private List<CreateCategoryImageRestRequest> images;
 

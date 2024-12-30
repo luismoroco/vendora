@@ -11,6 +11,8 @@ application:
     category:
       max-images: 3
       max-categories: 20
+    product:
+      max-images: 3
 
 spring:
   application:

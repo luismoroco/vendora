@@ -1,13 +1,10 @@
 package com.vendora.engine.modules.auth.request;
 
 import com.vendora.engine.modules.user.model.UserType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequest {

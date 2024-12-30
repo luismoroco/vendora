@@ -29,7 +29,7 @@ public class OrderEntity implements ModelAdapter<Order> {
   private OrderStatusType orderStatusType;
   @Enumerated(EnumType.STRING)
   private Currency currency;
-  @Positive
+
   private Double amount;
 
   @Column(insertable = false)

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface CategoryDao {
   boolean existCategoryByName(String name);
@@ -24,5 +25,8 @@ public interface CategoryDao {
   Optional<Category> getCategoryById(Long categoryId);
 
   boolean existCategoryById(Long categoryId);
+
   void deleteCategoriesById(List<Long> categoryIds);
+
+  Set<Category> getCategoriesById(List<Long> categoryIds);
 }
