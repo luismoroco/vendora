@@ -63,6 +63,10 @@ public class OrderBuilder {
         () -> new BadRequestException("Shopping cart not found")
       );
 
+    if (shoppingCart.getItems().size() == 0) {
+      throw new BadRequestException("Empty shopping cart");
+    }
+
     var productIds = shoppingCart.getItems().stream()
       .map(ShoppingCartItem::getProductId)
       .toList();
@@ -74,6 +78,10 @@ public class OrderBuilder {
       var product = productMap.get(shoppingCartItem.getProductId());
       if (Objects.isNull(product)) {
         continue;
+      }
+
+      if (product.getStock() < shoppingCartItem.getQuantity()) {
+        throw new BadRequestException("Insufficient stock");
       }
 
       var orderItem = new OrderItem();

@@ -1,5 +1,6 @@
 package com.vendora.engine.modules.shopping_cart;
 
+import com.vendora.engine.common.error.exc.exception.BadRequestException;
 import com.vendora.engine.modules.product.dao.ProductDao;
 import com.vendora.engine.modules.product.model.Product;
 import com.vendora.engine.modules.shopping_cart.dao.ShoppingCartDao;
@@ -66,6 +67,10 @@ public class ShoppingCartUseCase {
       var product = products.get(request.getProductId());
       if (Objects.isNull(product)) {
         continue;
+      }
+
+      if (product.getStock() < request.getQuantity()) {
+        throw new BadRequestException("Insufficient stock");
       }
 
       var item = new ShoppingCartItem();
