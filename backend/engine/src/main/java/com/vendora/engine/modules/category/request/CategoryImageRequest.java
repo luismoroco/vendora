@@ -6,6 +6,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateCategoryImageRequest {
+public class CategoryImageRequest {
   private String url;
 }

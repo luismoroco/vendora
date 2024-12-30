@@ -20,7 +20,7 @@ public class CreateCategoryRestRequest implements RequestAdapter<CreateCategoryR
   private Boolean featured;
 
   @NotNull
-  private List<CreateCategoryImageRestRequest> images;
+  private List<CategoryImageRestRequest> images;
 
   @Override
   public Class<CreateCategoryRequest> getTargetClass() {

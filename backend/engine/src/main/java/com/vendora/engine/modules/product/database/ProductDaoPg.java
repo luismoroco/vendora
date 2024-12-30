@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Qualifier("postgresql")
@@ -97,5 +99,13 @@ public class ProductDaoPg implements ProductDao {
   @Override
   public void deleteProductLikesById(List<Long> productLikeIds) {
     this.productLikeRepository.deleteAllById(productLikeIds);
+  }
+
+  @Override
+  public List<Product> getProductsById(List<Long> productIds) {
+    return this.repository.getAllByProductIdIn(productIds)
+      .stream()
+      .map(ProductEntity::toModel)
+      .toList();
   }
 }

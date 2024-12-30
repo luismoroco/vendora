@@ -11,5 +11,5 @@ import java.util.List;
 public class CreateCategoryRequest {
   private String name;
   private Boolean featured;
-  private List<CreateCategoryImageRequest> images;
+  private List<CategoryImageRequest> images;
 }

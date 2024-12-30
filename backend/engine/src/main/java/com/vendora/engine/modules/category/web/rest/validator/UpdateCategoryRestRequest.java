@@ -19,7 +19,7 @@ public class UpdateCategoryRestRequest implements RequestAdapter<UpdateCategoryR
   private Boolean featured;
 
   @Nullable
-  private List<CreateCategoryImageRestRequest> images;
+  private List<CategoryImageRestRequest> images;
 
   @Override
   public Class<UpdateCategoryRequest> getTargetClass() {

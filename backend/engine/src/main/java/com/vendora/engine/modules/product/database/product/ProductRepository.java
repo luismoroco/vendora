@@ -33,4 +33,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
   );
 
   boolean existsByProductId(Long productId);
+
+  List<ProductEntity> getAllByProductIdIn(List<Long> productIds);
 }

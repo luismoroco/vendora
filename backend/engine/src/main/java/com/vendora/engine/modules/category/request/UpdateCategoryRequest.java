@@ -12,5 +12,5 @@ public class UpdateCategoryRequest {
   private Long categoryId;
   private String name;
   private Boolean featured;
-  private List<CreateCategoryImageRequest> images;
+  private List<CategoryImageRequest> images;
 }

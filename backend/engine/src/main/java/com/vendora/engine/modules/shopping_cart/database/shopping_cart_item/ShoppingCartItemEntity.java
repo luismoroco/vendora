@@ -1,15 +1,15 @@
 package com.vendora.engine.modules.shopping_cart.database.shopping_cart_item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vendora.engine.common.persistence.ModelAdapter;
+import com.vendora.engine.modules.shopping_cart.database.shopping_cart.ShoppingCartEntity;
 import com.vendora.engine.modules.shopping_cart.model.ShoppingCartItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "shopping_cart_item")
 @NoArgsConstructor
@@ -17,11 +17,18 @@ import lombok.NoArgsConstructor;
 public class ShoppingCartItemEntity implements ModelAdapter<ShoppingCartItem> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long shoppingCartItemId;
-  @NotNull Long shoppingCartId;
-  @NotNull Long productId;
-   Integer quantity;
-   Integer number;
+  private Long shoppingCartItemId;
+  @NotNull
+  private Long productId;
+  @NotNull
+  private Integer quantity;
+  @NotNull
+  private Integer number;
+
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "shoppingCartId")
+  private ShoppingCartEntity shoppingCart;
 
   @Override
   public ShoppingCartItem toModel() {

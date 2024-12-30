@@ -5,13 +5,12 @@ import com.vendora.engine.modules.shopping_cart.database.shopping_cart_item.Shop
 import com.vendora.engine.modules.shopping_cart.model.ShoppingCart;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "shopping_cart")
 @NoArgsConstructor
@@ -19,12 +18,11 @@ import java.util.Set;
 public class ShoppingCartEntity implements ModelAdapter<ShoppingCart> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long shoppingCartId;
+  private Long shoppingCartId;
   @NotNull
   private Long userId;
 
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-  @JoinColumn(name = "shoppingCartId")
+  @OneToMany(mappedBy = "shoppingCart", cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<ShoppingCartItemEntity> items;
 
   @Override

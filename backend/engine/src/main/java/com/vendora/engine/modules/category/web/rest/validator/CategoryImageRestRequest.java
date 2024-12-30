@@ -1,7 +1,7 @@
 package com.vendora.engine.modules.category.web.rest.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
-import com.vendora.engine.modules.category.request.CreateCategoryImageRequest;
+import com.vendora.engine.modules.category.request.CategoryImageRequest;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
@@ -9,12 +9,12 @@ import org.hibernate.validator.constraints.URL;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateCategoryImageRestRequest implements RequestAdapter<CreateCategoryImageRequest> {
+public class CategoryImageRestRequest implements RequestAdapter<CategoryImageRequest> {
   @URL
   private String url;
 
   @Override
-  public Class<CreateCategoryImageRequest> getTargetClass() {
-    return CreateCategoryImageRequest.class;
+  public Class<CategoryImageRequest> getTargetClass() {
+    return CategoryImageRequest.class;
   }
 }

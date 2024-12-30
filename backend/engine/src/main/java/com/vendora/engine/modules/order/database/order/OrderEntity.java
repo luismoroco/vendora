@@ -7,7 +7,6 @@ import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderStatusType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.time.LocalDateTime;

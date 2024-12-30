@@ -110,7 +110,7 @@ public class CategoryUseCase {
     }
   }
 
-  private static void addCategoryImages(Category category, List<CreateCategoryImageRequest> imageRequests) {
+  private static void addCategoryImages(Category category, List<CategoryImageRequest> imageRequests) {
     int imagesLength = imageRequests.size();
     var images = new HashSet<CategoryImage>(imagesLength);
     for (int index = 0; index < imagesLength; index++) {
