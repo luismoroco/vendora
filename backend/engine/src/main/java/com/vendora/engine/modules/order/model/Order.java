@@ -20,18 +20,37 @@ public class Order {
   private Double amount;
 
   private Set<OrderItem> items;
+  @JsonIgnore
   private Set<Payment> payments;
 
+  @JsonIgnore
   public boolean isPaid() {
     return this.orderStatusType == OrderStatusType.PAID;
   }
 
+  @JsonIgnore
   public boolean isCanceled() {
     return this.orderStatusType == OrderStatusType.CANCELED;
   }
 
+  @JsonIgnore
   public void paid() {
     this.orderStatusType = OrderStatusType.PAID;
+  }
+
+  public Payment getPayment() {
+    return this.payments.stream()
+      .filter(Payment::isPaid)
+      .findFirst()
+      .orElse(null);
+  }
+
+  @JsonIgnore
+  public Payment getPendingPayment() {
+    return this.payments.stream()
+      .filter(Payment::isPending)
+      .findFirst()
+      .orElse(null);
   }
 
   public Payment initializePayment() {

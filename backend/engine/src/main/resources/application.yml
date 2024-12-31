@@ -45,6 +45,8 @@ spring:
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: true
+    serialization:
+      write-dates-as-timestamps: true
   data:
     redis:
       url: redis://localhost:6379

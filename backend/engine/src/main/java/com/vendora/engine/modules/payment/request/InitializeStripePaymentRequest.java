@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InitializePaymentRequest {
+public class InitializeStripePaymentRequest {
   private String redirectUrl;
   private Long orderId;
   private PaymentProvider paymentProvider;

@@ -33,6 +33,7 @@ public class PaymentProcessor {
     }
 
     this.gateway = gateway;
+    this.checkConfiguration();
   }
 
   public <P extends PaymentInformation> Payment initializeCheckout(Order order, P args) {
@@ -40,6 +41,12 @@ public class PaymentProcessor {
     order.expirePayments();
 
     return this.gateway.initializeCheckout(order, Map.of("args", args));
+  }
+
+  public <P extends PaymentInformation> Payment completePayment(Payment payment, P args) {
+    this.validateOrder(payment.getOrder());
+
+    return this.gateway.completeCheckout(payment, Map.of("args", args));
   }
 
   private void validateOrder(Order order) {

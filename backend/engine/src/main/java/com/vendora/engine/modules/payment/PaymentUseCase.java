@@ -4,8 +4,9 @@ import com.vendora.engine.common.error.exc.exception.NotFoundException;
 import com.vendora.engine.modules.order.dao.OrderDao;
 import com.vendora.engine.modules.payment.dao.PaymentDao;
 import com.vendora.engine.modules.payment.model.Payment;
+import com.vendora.engine.modules.payment.request.CompleteStripePaymentRequest;
 import com.vendora.engine.modules.payment.request.GetPaymentByIdRequest;
-import com.vendora.engine.modules.payment.request.InitializePaymentRequest;
+import com.vendora.engine.modules.payment.request.InitializeStripePaymentRequest;
 import com.vendora.engine.modules.payment_provider.processing.PaymentProcessor;
 import com.vendora.engine.modules.payment_provider.processing.providers.stripe_checkout.request.StripePaymentInformation;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,7 +35,7 @@ public class PaymentUseCase {
       );
   }
 
-  public Payment initializeStripeCheckout(final InitializePaymentRequest request) {
+  public Payment initializeStripePayment(final InitializeStripePaymentRequest request) {
     var order = this.orderDao.getOrderById(request.getOrderId())
       .orElseThrow(
         () -> new NotFoundException("Order not found")
@@ -46,6 +47,24 @@ public class PaymentUseCase {
     this.paymentProcessor.setGateway(request.getPaymentProvider());
     var payment = this.paymentProcessor.initializeCheckout(order, args);
 
+    this.orderDao.saverOrder(order);
+
+    return payment;
+  }
+
+  public Payment completeStripePayment(final CompleteStripePaymentRequest request) {
+    var order = this.orderDao.getOrderById(request.getOrderId())
+      .orElseThrow(
+        () -> new NotFoundException("Payment not found")
+      );
+
+    var payment = order.getPendingPayment();
+    this.paymentProcessor.setGateway(payment.getPaymentProvider());
+
+    var args = new StripePaymentInformation();
+    args.setData(request.getData());
+
+    payment = this.paymentProcessor.completePayment(payment, args);
     this.orderDao.saverOrder(order);
 
     return payment;

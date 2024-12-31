@@ -3,10 +3,13 @@ package com.vendora.engine.modules.payment_provider.processing.providers.stripe_
 import com.vendora.engine.modules.payment_provider.processing.providers.PaymentInformation;
 import lombok.*;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StripePaymentInformation extends PaymentInformation {
+  private Map<String, Object> data;
   private String redirectUrl;
 }

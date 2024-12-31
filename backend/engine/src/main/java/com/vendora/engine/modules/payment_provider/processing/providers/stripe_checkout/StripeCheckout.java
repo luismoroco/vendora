@@ -2,12 +2,14 @@ package com.vendora.engine.modules.payment_provider.processing.providers.stripe_
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Account;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.vendora.engine.common.error.exc.exception.BadRequestException;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.model.PaymentMethodType;
+import com.vendora.engine.modules.payment.model.PaymentStatusType;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
 import com.vendora.engine.modules.payment_provider.processing.providers.PaymentGateway;
 import com.vendora.engine.modules.payment_provider.processing.providers.stripe_checkout.request.StripePaymentInformation;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Component("stripe_checkout")
@@ -64,20 +67,51 @@ public class StripeCheckout implements PaymentGateway {
 
     try {
       var session = Session.create(sessionParams);
+      payment.setInitializationData(Map.of(
+        "url", session.getUrl(),
+        "id", session.getId(),
+        "metadata", session.getMetadata()
+      ));
+
       return payment;
     } catch (StripeException e) {
-      LOGGER.error("Error in stripe initialization payment [orderId=%d][error=%s]".formatted(order.getOrderId(), e));
+      LOGGER.error("Error in initialization payment [paymentProvider=%s][orderId=%d][error=%s]"
+        .formatted(PaymentProvider.STRIPE_CHECKOUT.name(), order.getOrderId(), e));
+
       throw new RuntimeException("Error in payment");
     }
   }
 
   @Override
-  public void completeCheckout(Payment payment) {
+  public Payment completeCheckout(Payment payment, Map<String, Object> args) {
+    var paymentInformation = (StripePaymentInformation) args.get("args");
+    var object = (Map<String, Object>) paymentInformation.getData().get("object");
+    var paymentStatus = object.get("payment_status");
 
+    if ("paid".equals(paymentStatus)) {
+      payment.setPaymentStatusType(PaymentStatusType.PAID);
+      payment.setTransactionData(paymentInformation.getData());
+      payment.setPaidAt(LocalDateTime.now());
+      payment.getOrder().paid();
+
+      return payment;
+    }
+
+    throw new BadRequestException("Invalid paid");
   }
 
   @Override
   public void checkConfiguration() {
+    Stripe.apiKey = this.SECRET_KEY;
+
+    try {
+      Account.retrieve();
+    } catch (StripeException e) {
+      LOGGER.error("Invalid Keys [paymentProvider=%s][error=%s]"
+        .formatted(PaymentProvider.STRIPE_CHECKOUT.name(), e));
+
+      throw new RuntimeException("Invalid keys");
+    }
   }
 
   private static Long fixAmount(Double amount) {

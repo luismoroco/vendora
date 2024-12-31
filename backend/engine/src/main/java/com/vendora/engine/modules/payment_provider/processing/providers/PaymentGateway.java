@@ -8,7 +8,7 @@ import java.util.Map;
 public interface PaymentGateway {
   Payment initializeCheckout(Order order, Map<String, Object> args);
 
-  void completeCheckout(Payment payment);
+  Payment completeCheckout(Payment payment, Map<String, Object> args);
 
   void checkConfiguration();
 }
