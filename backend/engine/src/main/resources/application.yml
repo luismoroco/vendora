@@ -13,6 +13,12 @@ application:
       max-categories: 20
     product:
       max-images: 3
+  payment-providers:
+    stripe-checkout:
+      public-key: pk_test_51PGRVWHzhyleeX7zZt4JSaoIneD4h1q8sDLDGCVttTptgM74zQuApBXB0nGDMvbgrf2W6igwKjsIwbxue8qqzqZy00YIkbtjt7
+      secret-key: sk_test_51PGRVWHzhyleeX7zIIlCOa9wo3oV4G7EZ9kmKIZibIi5D4Qm8yLG2roELDfdXcw78Yit68umn8Hd4cBhSlQ4TZzN00nnbIFCAy
+      webhook-id: we_1PWirZHzhyleeX7zV7FWMIKe
+      url: https://api.stripe.com/v1
 
 spring:
   application:

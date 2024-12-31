@@ -5,6 +5,7 @@ import com.vendora.engine.modules.currency.model.Currency;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderItem;
 import com.vendora.engine.modules.order.model.OrderStatusType;
+import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.product.dao.ProductDao;
 import com.vendora.engine.modules.product.model.Product;
 import com.vendora.engine.modules.shopping_cart.dao.ShoppingCartDao;
@@ -19,7 +20,8 @@ public class OrderBuilder {
   private final ShoppingCartDao shoppingCartDao;
   private final ProductDao productDao;
   private Long userId;
-  private Set<OrderItem> orderItems = new HashSet<>();
+  private final Set<OrderItem> orderItems = new HashSet<>();
+  private final Set<Payment> payments = new HashSet<>();
   private OrderStatusType orderStatusType;
   private Currency currency;
   private Double amount = 0.0;
@@ -104,6 +106,7 @@ public class OrderBuilder {
     this.order.setCurrency(this.currency);
     this.order.setAmount(this.amount);
     this.order.setItems(this.orderItems);
+    this.order.setPayments(this.payments);
 
     return order;
   }

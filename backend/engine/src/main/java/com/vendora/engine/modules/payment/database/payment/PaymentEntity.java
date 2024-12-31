@@ -1,22 +1,22 @@
 package com.vendora.engine.modules.payment.database.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vendora.engine.common.persistence.ModelAdapter;
+import com.vendora.engine.modules.order.database.order.OrderEntity;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.model.PaymentMethodType;
 import com.vendora.engine.modules.payment.model.PaymentStatusType;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "payment")
 @NoArgsConstructor
@@ -25,8 +25,6 @@ public class PaymentEntity implements ModelAdapter<Payment> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long paymentId;
-  @NotNull
-  private Long orderId;
   @Enumerated(EnumType.STRING)
   private PaymentMethodType paymentMethodType;
   @Enumerated(EnumType.STRING)
@@ -39,10 +37,15 @@ public class PaymentEntity implements ModelAdapter<Payment> {
   private Map<String, Object> transactionData;
   private LocalDateTime paidAt;
 
-  @Column(insertable = false)
+  @Column(insertable = false, updatable = false)
   private LocalDateTime createdAt;
   @Column(insertable = false)
   private LocalDateTime updatedAt;
+
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "orderId")
+  private OrderEntity order;
 
   @Override
   public Payment toModel() {

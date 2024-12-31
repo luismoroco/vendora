@@ -11,11 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {
-  @JsonIgnore Long orderItemId;
-  Long productId;
-  String name;
-  Double unitPrice;
-  Integer quantity;
+  @JsonIgnore
+  private Long orderItemId;
+  private Long productId;
+  private String name;
+  private Double unitPrice;
+  private Integer quantity;
 
-  @JsonIgnore Order order;
+  @JsonIgnore
+  private Order order;
 }

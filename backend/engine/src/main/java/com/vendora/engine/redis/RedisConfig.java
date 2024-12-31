@@ -1,4 +1,4 @@
-package com.vendora.engine.config.redis;
+package com.vendora.engine.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;

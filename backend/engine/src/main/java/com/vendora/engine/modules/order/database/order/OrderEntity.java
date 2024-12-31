@@ -5,6 +5,7 @@ import com.vendora.engine.modules.currency.model.Currency;
 import com.vendora.engine.modules.order.database.order_item.OrderItemEntity;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderStatusType;
+import com.vendora.engine.modules.payment.database.payment.PaymentEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -37,8 +38,11 @@ public class OrderEntity implements ModelAdapter<Order> {
   @Column(insertable = false)
   private LocalDateTime updatedAt;
 
-  @OneToMany(mappedBy = "order" , cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @OneToMany(mappedBy = "order", cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<OrderItemEntity> items;
+
+  @OneToMany(mappedBy = "order", cascade = {CascadeType.ALL}, orphanRemoval = true)
+  private Set<PaymentEntity> payments;
 
   @Override
   public Order toModel() {
