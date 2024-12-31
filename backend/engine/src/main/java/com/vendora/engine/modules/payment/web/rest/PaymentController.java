@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.common.web.webhook.Webhook;
-import com.vendora.engine.modules.order.OrderUseCase;
 import com.vendora.engine.modules.payment.PaymentUseCase;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.request.CompleteStripePaymentRequest;
 import com.vendora.engine.modules.payment.web.rest.validator.InitializeStripePaymentRestRequest;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
-import com.vendora.engine.modules.product.ProductUseCase;
-import com.vendora.engine.modules.product.request.UpdateProductRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +27,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
+  private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
   private final PaymentUseCase useCase;
   private final Scrooge<? extends Credentials> scrooge;
   private final ObjectMapper objectMapper;
-  private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
 
   public PaymentController(
     PaymentUseCase useCase,

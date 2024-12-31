@@ -11,9 +11,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImage {
-  @JsonIgnore Long productImageId;
+  @JsonIgnore
+  Long productImageId;
   String url;
   Integer number;
 
-  @JsonIgnore Product product;
+  @JsonIgnore
+  Product product;
 }

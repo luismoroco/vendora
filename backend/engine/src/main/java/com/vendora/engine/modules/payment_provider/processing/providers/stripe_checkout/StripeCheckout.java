@@ -23,13 +23,18 @@ import java.util.Map;
 
 @Component("stripe_checkout")
 public class StripeCheckout implements PaymentGateway {
+  Logger LOGGER = LoggerFactory.getLogger(StripeCheckout.class);
   @Value("${application.payment-providers.stripe-checkout.public-key}")
   private String PUBLIC_KEY;
   @Value("${application.payment-providers.stripe-checkout.secret-key}")
   private String SECRET_KEY;
   @Value("${application.payment-providers.stripe-checkout.url}")
   private String URL;
-  Logger LOGGER = LoggerFactory.getLogger(StripeCheckout.class);
+
+  private static Long fixAmount(Double amount) {
+    Double fixedAmount = amount * 100;
+    return fixedAmount.longValue();
+  }
 
   private Map<String, String> buildHeaders() {
     return Map.of(
@@ -112,10 +117,5 @@ public class StripeCheckout implements PaymentGateway {
 
       throw new RuntimeException("Invalid keys");
     }
-  }
-
-  private static Long fixAmount(Double amount) {
-    Double fixedAmount = amount * 100;
-    return fixedAmount.longValue();
   }
 }

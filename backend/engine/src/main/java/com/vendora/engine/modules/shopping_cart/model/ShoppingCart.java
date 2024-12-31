@@ -13,8 +13,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShoppingCart {
-  @JsonIgnore Long shoppingCartId;
-  @JsonIgnore Long userId;
+  @JsonIgnore
+  Long shoppingCartId;
+  @JsonIgnore
+  Long userId;
 
   Set<ShoppingCartItem> items;
 }

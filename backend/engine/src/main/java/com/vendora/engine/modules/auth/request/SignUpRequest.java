@@ -1,7 +1,10 @@
 package com.vendora.engine.modules.auth.request;
 
 import com.vendora.engine.modules.user.model.UserType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

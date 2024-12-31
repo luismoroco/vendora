@@ -30,6 +30,23 @@ public class CategoryUseCase {
     this.dao = dao;
   }
 
+  private static void addCategoryImages(Category category, List<CategoryImageRequest> imageRequests) {
+    int imagesLength = imageRequests.size();
+    var images = new HashSet<CategoryImage>(imagesLength);
+    for (int index = 0; index < imagesLength; index++) {
+      var imageRequest = imageRequests.get(index);
+
+      var image = new CategoryImage();
+      image.setUrl(imageRequest.getUrl());
+      image.setNumber(index);
+      image.setCategory(category);
+
+      images.add(image);
+    }
+
+    category.setImages(images);
+  }
+
   public Category createCategory(final CreateCategoryRequest request) {
     int imagesLength = request.getImages().size();
     this.validateCategoryConstraints(imagesLength, request.getName());
@@ -108,22 +125,5 @@ public class CategoryUseCase {
         throw new BadRequestException("Category already exists");
       }
     }
-  }
-
-  private static void addCategoryImages(Category category, List<CategoryImageRequest> imageRequests) {
-    int imagesLength = imageRequests.size();
-    var images = new HashSet<CategoryImage>(imagesLength);
-    for (int index = 0; index < imagesLength; index++) {
-      var imageRequest = imageRequests.get(index);
-
-      var image = new CategoryImage();
-      image.setUrl(imageRequest.getUrl());
-      image.setNumber(index);
-      image.setCategory(category);
-
-      images.add(image);
-    }
-
-    category.setImages(images);
   }
 }

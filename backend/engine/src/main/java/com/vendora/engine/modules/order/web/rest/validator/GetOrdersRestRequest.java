@@ -28,10 +28,12 @@ public class GetOrdersRestRequest implements RequestAdapter<GetOrdersRequest> {
   @Nullable
   private Currency currency;
 
-  @NotNull @Positive
+  @NotNull
+  @Positive
   private Integer page;
 
-  @NotNull @Positive
+  @NotNull
+  @Positive
   private Integer size;
 
   @Override

@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public class OrderBuilder {
   private final ShoppingCartDao shoppingCartDao;
   private final ProductDao productDao;
-  private Long userId;
   private final Set<OrderItem> orderItems = new HashSet<>();
   private final Set<Payment> payments = new HashSet<>();
+  private Long userId;
   private OrderStatusType orderStatusType;
   private Currency currency;
   private Double amount = 0.0;

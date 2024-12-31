@@ -6,7 +6,10 @@ import com.vendora.engine.modules.category.database.category.CategoryEntity;
 import com.vendora.engine.modules.category.model.CategoryImage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

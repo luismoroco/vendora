@@ -35,6 +35,23 @@ public class ProductUseCase {
     this.categoryDao = categoryDao;
   }
 
+  private static void addProductImages(Product product, List<CreateProductImageRequest> imageRequests) {
+    int imagesLength = imageRequests.size();
+    var images = new HashSet<ProductImage>(imagesLength);
+    for (int index = 0; index < imagesLength; index++) {
+      var imageRequest = imageRequests.get(index);
+
+      var image = new ProductImage();
+      image.setUrl(imageRequest.getUrl());
+      image.setNumber(index);
+      image.setProduct(product);
+
+      images.add(image);
+    }
+
+    product.setImages(images);
+  }
+
   public Product createProduct(final CreateProductRequest request) {
     int imagesLength = request.getImages().size();
     this.validateProductConstraints(imagesLength, request.getName());
@@ -150,22 +167,5 @@ public class ProductUseCase {
         throw new BadRequestException("Product already exists");
       }
     }
-  }
-
-  private static void addProductImages(Product product, List<CreateProductImageRequest> imageRequests) {
-    int imagesLength = imageRequests.size();
-    var images = new HashSet<ProductImage>(imagesLength);
-    for (int index = 0; index < imagesLength; index++) {
-      var imageRequest = imageRequests.get(index);
-
-      var image = new ProductImage();
-      image.setUrl(imageRequest.getUrl());
-      image.setNumber(index);
-      image.setProduct(product);
-
-      images.add(image);
-    }
-
-    product.setImages(images);
   }
 }

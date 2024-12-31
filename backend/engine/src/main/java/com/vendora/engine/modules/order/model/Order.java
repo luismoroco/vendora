@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vendora.engine.modules.currency.model.Currency;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.model.PaymentStatusType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -14,7 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Order {
   private Long orderId;
-  @JsonIgnore private Long userId;
+  @JsonIgnore
+  private Long userId;
   private OrderStatusType orderStatusType;
   private Currency currency;
   private Double amount;

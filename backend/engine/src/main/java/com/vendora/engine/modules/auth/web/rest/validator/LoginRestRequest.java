@@ -4,7 +4,10 @@ import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.auth.request.LoginRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

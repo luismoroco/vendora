@@ -8,7 +8,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -48,7 +51,7 @@ public class ProductEntity implements ModelAdapter<Product> {
 
   @ManyToMany(
     fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE, CascadeType.REFRESH }
+    cascade = {CascadeType.MERGE, CascadeType.REFRESH}
   )
   @JoinTable(
     name = "category_product",

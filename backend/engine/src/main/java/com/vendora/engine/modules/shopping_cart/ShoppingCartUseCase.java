@@ -33,6 +33,14 @@ public class ShoppingCartUseCase {
     this.productDao = productDao;
   }
 
+  private static ShoppingCart createEmptyShoppingCart(Long userId) {
+    var shoppingCart = new ShoppingCart();
+    shoppingCart.setUserId(userId);
+    shoppingCart.setItems(new HashSet<>());
+
+    return shoppingCart;
+  }
+
   public ShoppingCart updateShoppingCart(final UpdateShoppingCartRequest request) {
     var shoppingCart = this.dao.getShoppingCartByUserId(request.getUserId())
       .orElseGet(() -> createEmptyShoppingCart(request.getUserId()));
@@ -83,13 +91,5 @@ public class ShoppingCartUseCase {
     }
 
     shoppingCart.setItems(items);
-  }
-
-  private static ShoppingCart createEmptyShoppingCart(Long userId) {
-    var shoppingCart = new ShoppingCart();
-    shoppingCart.setUserId(userId);
-    shoppingCart.setItems(new HashSet<>());
-
-    return shoppingCart;
   }
 }

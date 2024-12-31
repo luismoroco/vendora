@@ -15,7 +15,8 @@ import org.hibernate.validator.constraints.URL;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InitializeStripePaymentRestRequest implements RequestAdapter<InitializeStripePaymentRequest> {
-  @NotNull @URL
+  @NotNull
+  @URL
   private String redirectUrl;
 
   @NotNull

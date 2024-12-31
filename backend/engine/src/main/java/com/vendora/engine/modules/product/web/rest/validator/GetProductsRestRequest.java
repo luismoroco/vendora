@@ -29,10 +29,12 @@ public class GetProductsRestRequest implements RequestAdapter<GetProductsRequest
   @Nullable
   private List<Long> categoryIds;
 
-  @Nullable @PositiveOrZero
+  @Nullable
+  @PositiveOrZero
   private Double minPrice;
 
-  @Nullable @PositiveOrZero
+  @Nullable
+  @PositiveOrZero
   private Double maxPrice;
 
   @NotNull

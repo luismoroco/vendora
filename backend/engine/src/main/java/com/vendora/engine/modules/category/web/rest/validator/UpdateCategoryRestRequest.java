@@ -3,7 +3,10 @@ package com.vendora.engine.modules.category.web.rest.validator;
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.category.request.UpdateCategoryRequest;
 import jakarta.annotation.Nullable;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 

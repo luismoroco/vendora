@@ -8,7 +8,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -24,9 +27,11 @@ public class OrderItemEntity implements ModelAdapter<OrderItem> {
   private Long productId;
   @NotBlank
   private String name;
-  @NotNull @PositiveOrZero
+  @NotNull
+  @PositiveOrZero
   private Double unitPrice;
-  @NotNull @PositiveOrZero
+  @NotNull
+  @PositiveOrZero
   private Integer quantity;
 
   @JsonIgnore

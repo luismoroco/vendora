@@ -11,10 +11,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShoppingCartItem {
-  @JsonIgnore Long shoppingCartItemId;
+  @JsonIgnore
+  Long shoppingCartItemId;
   Long productId;
   Integer quantity;
   Integer number;
 
-  @JsonIgnore ShoppingCart shoppingCart;
+  @JsonIgnore
+  ShoppingCart shoppingCart;
 }

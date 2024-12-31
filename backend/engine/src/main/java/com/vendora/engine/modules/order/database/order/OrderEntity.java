@@ -9,7 +9,10 @@ import com.vendora.engine.modules.payment.database.payment.PaymentEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,7 +33,8 @@ public class OrderEntity implements ModelAdapter<Order> {
   private OrderStatusType orderStatusType;
   @Enumerated(EnumType.STRING)
   private Currency currency;
-  @NotNull @PositiveOrZero
+  @NotNull
+  @PositiveOrZero
   private Double amount;
 
   @Column(insertable = false, updatable = false)

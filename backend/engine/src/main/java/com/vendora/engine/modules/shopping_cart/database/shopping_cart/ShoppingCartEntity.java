@@ -5,7 +5,10 @@ import com.vendora.engine.modules.shopping_cart.database.shopping_cart_item.Shop
 import com.vendora.engine.modules.shopping_cart.model.ShoppingCart;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 

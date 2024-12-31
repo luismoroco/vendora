@@ -8,7 +8,10 @@ import com.vendora.engine.modules.payment.model.PaymentMethodType;
 import com.vendora.engine.modules.payment.model.PaymentStatusType;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

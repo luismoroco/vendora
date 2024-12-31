@@ -17,7 +17,8 @@ public class ShoppingCartItemRestRequest implements RequestAdapter<ShoppingCartI
   @NotNull
   private Long productId;
 
-  @NotNull @Positive
+  @NotNull
+  @Positive
   private Integer quantity;
 
   @Override

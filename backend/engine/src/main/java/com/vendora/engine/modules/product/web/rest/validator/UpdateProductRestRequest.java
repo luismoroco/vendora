@@ -22,7 +22,8 @@ public class UpdateProductRestRequest implements RequestAdapter<UpdateProductReq
   @Nullable
   private String description;
 
-  @Nullable @PositiveOrZero
+  @Nullable
+  @PositiveOrZero
   private Double price;
 
   @Nullable
@@ -34,7 +35,8 @@ public class UpdateProductRestRequest implements RequestAdapter<UpdateProductReq
   @Nullable
   private Boolean archived;
 
-  @Nullable @PositiveOrZero
+  @Nullable
+  @PositiveOrZero
   private Integer stock;
 
   @Nullable

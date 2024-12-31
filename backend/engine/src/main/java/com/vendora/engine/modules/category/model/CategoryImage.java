@@ -9,9 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryImage {
-  @JsonIgnore Long categoryImageId;
+  @JsonIgnore
+  Long categoryImageId;
   String url;
   Integer number;
 
-  @JsonIgnore Category category;
+  @JsonIgnore
+  Category category;
 }

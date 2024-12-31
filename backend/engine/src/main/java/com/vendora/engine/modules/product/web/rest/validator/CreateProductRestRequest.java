@@ -23,7 +23,8 @@ public class CreateProductRestRequest implements RequestAdapter<CreateProductReq
   @NotBlank
   private String description;
 
-  @NotNull @PositiveOrZero
+  @NotNull
+  @PositiveOrZero
   private Double price;
 
   @NotNull
@@ -32,7 +33,8 @@ public class CreateProductRestRequest implements RequestAdapter<CreateProductReq
   @NotNull
   private Boolean featured;
 
-  @NotNull @PositiveOrZero
+  @NotNull
+  @PositiveOrZero
   private Integer stock;
 
   @NotNull
