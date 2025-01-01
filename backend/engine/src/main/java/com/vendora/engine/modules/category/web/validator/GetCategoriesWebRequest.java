@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.category.web.rest.validator;
+package com.vendora.engine.modules.category.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.category.request.GetCategoriesRequest;
