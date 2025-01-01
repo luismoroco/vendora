@@ -1,0 +1,4 @@
+type CategoryImage {
+    url: String!
+    number: Int!
+}

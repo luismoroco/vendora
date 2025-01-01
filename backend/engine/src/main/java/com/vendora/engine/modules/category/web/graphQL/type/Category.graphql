@@ -1,0 +1,7 @@
+type Category {
+    categoryId: ID!
+    name: String!
+    featured: Boolean!
+
+    images: [CategoryImage]
+}

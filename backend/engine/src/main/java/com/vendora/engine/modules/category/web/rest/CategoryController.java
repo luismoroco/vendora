@@ -4,11 +4,11 @@ import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.category.CategoryUseCase;
 import com.vendora.engine.modules.category.model.Category;
-import com.vendora.engine.modules.category.request.DeleteCategoryByIdRequest;
+import com.vendora.engine.modules.category.request.DeleteCategoryRequest;
 import com.vendora.engine.modules.category.request.GetCategoryByIdRequest;
-import com.vendora.engine.modules.category.web.rest.validator.CreateCategoryRestRequest;
-import com.vendora.engine.modules.category.web.rest.validator.GetCategoriesRestRequest;
-import com.vendora.engine.modules.category.web.rest.validator.UpdateCategoryRestRequest;
+import com.vendora.engine.modules.category.web.rest.validator.CreateCategoryWebRequest;
+import com.vendora.engine.modules.category.web.rest.validator.GetCategoriesWebRequest;
+import com.vendora.engine.modules.category.web.rest.validator.UpdateCategoryWebRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,7 @@ public class CategoryController {
   @PostMapping("")
   @PreAuthorize("hasRole('MANAGER')")
   public ResponseEntity<Category> createCategory(
-    @Valid @RequestBody final CreateCategoryRestRequest payload
+    @Valid @RequestBody final CreateCategoryWebRequest payload
   ) {
     var category = this.useCase.createCategory(payload.buildRequest());
 
@@ -44,7 +44,7 @@ public class CategoryController {
   }
 
   @GetMapping("")
-  public ResponseEntity<Page<Category>> getCategories(@Valid final GetCategoriesRestRequest payload) {
+  public ResponseEntity<Page<Category>> getCategories(@Valid final GetCategoriesWebRequest payload) {
     var categories = this.useCase.getCategories(payload.buildRequest());
 
     return ResponseEntity.status(HttpStatus.OK).body(categories);
@@ -60,11 +60,11 @@ public class CategoryController {
 
   @PutMapping("/{categoryId}")
   @PreAuthorize("hasRole('MANAGER')")
-  public ResponseEntity<Category> updateCategoryById(
-    @Valid @RequestBody final UpdateCategoryRestRequest payload,
+  public ResponseEntity<Category> updateCategory(
+    @Valid @RequestBody final UpdateCategoryWebRequest payload,
     @PathVariable final Long categoryId
   ) {
-    var category = this.useCase.updateCategoryById(
+    var category = this.useCase.updateCategory(
       payload.buildRequest(
         Map.of("categoryId", categoryId)
       )
@@ -75,8 +75,8 @@ public class CategoryController {
 
   @DeleteMapping("/{categoryId}")
   @PreAuthorize("hasRole('MANAGER')")
-  public ResponseEntity<Void> deleteCategoryById(@PathVariable final Long categoryId) {
-    var request = new DeleteCategoryByIdRequest(categoryId);
+  public ResponseEntity<Void> deleteCategory(@PathVariable final Long categoryId) {
+    var request = new DeleteCategoryRequest(categoryId);
     this.useCase.deleteCategoryById(request);
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

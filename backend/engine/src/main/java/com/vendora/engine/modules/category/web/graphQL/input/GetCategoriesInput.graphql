@@ -1,0 +1,7 @@
+input GetCategoriesInput {
+    name: String
+    featured: Boolean
+    categoryIds: [Int]
+    page: Int!
+    size: Int!
+}

@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCategoryRestRequest implements RequestAdapter<UpdateCategoryRequest> {
+public class UpdateCategoryWebRequest implements RequestAdapter<UpdateCategoryRequest> {
   @Nullable
   private String name;
 
@@ -22,7 +22,7 @@ public class UpdateCategoryRestRequest implements RequestAdapter<UpdateCategoryR
   private Boolean featured;
 
   @Nullable
-  private List<CategoryImageRestRequest> images;
+  private List<CategoryImageWebRequest> images;
 
   @Override
   public Class<UpdateCategoryRequest> getTargetClass() {

@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetCategoriesRestRequest implements RequestAdapter<GetCategoriesRequest> {
+public class GetCategoriesWebRequest implements RequestAdapter<GetCategoriesRequest> {
   @Nullable
   private String name;
 

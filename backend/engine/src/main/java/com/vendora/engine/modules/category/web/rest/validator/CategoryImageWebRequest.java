@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.URL;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryImageRestRequest implements RequestAdapter<CategoryImageRequest> {
+public class CategoryImageWebRequest implements RequestAdapter<CategoryImageRequest> {
   @URL
   private String url;
 

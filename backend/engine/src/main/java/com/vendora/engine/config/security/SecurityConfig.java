@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
   private static final String[] PUBLIC_ROUTES = {"/api/v1/products/**", "/api/v1/categories/**"};
+  private static final String[] GRAPH_QL = {"/graphql"};
   private static final String[] AUTH_ROUTES = {"/api/v1/auth/**"};
   private static final String[] PRIVATE_ROUTES = {"/api/v1/**"};
   private static final String[] WEBHOOK_ROUTES = {"/api/v1/payments/stripe/complete/**"};
@@ -39,11 +40,13 @@ public class SecurityConfig {
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests
         (authorize -> authorize
-          .requestMatchers(HttpMethod.POST, AUTH_ROUTES).permitAll()
-          .requestMatchers(HttpMethod.GET, PUBLIC_ROUTES).permitAll()
-          .requestMatchers(HttpMethod.POST, WEBHOOK_ROUTES).permitAll()
-          .requestMatchers(PRIVATE_ROUTES).authenticated()
-          .anyRequest().authenticated()
+          //.requestMatchers(HttpMethod.POST, AUTH_ROUTES).permitAll()
+          //.requestMatchers(HttpMethod.GET, PUBLIC_ROUTES).permitAll()
+          //.requestMatchers(HttpMethod.POST, WEBHOOK_ROUTES).permitAll()
+          //.requestMatchers(HttpMethod.GET, GRAPH_QL).permitAll()
+          //.requestMatchers(HttpMethod.POST, GRAPH_QL).permitAll()
+          //.requestMatchers(PRIVATE_ROUTES).authenticated()
+          .anyRequest().permitAll()
         )
       .sessionManagement
         (manager -> manager

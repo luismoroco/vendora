@@ -1,0 +1,5 @@
+input UpdateCategoryInput {
+    name: String
+    featured: Boolean
+    images: [CategoryImageInput]
+}

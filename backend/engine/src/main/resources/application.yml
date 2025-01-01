@@ -1,6 +1,7 @@
 logging:
   level:
     org.springframework.security: DEBUG
+    graphql: DEBUG
 
 application:
   security:
@@ -56,3 +57,6 @@ spring:
       duration: 24
       repositories:
         enabled: false
+  graphql:
+    schema:
+      locations: file:src/main/java/com/vendora/engine/

@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateCategoryRestRequest implements RequestAdapter<CreateCategoryRequest> {
+public class CreateCategoryWebRequest implements RequestAdapter<CreateCategoryRequest> {
   @NotBlank
   private String name;
 
@@ -23,7 +23,7 @@ public class CreateCategoryRestRequest implements RequestAdapter<CreateCategoryR
   private Boolean featured;
 
   @NotNull
-  private List<CategoryImageRestRequest> images;
+  private List<CategoryImageWebRequest> images;
 
   @Override
   public Class<CreateCategoryRequest> getTargetClass() {

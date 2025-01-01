@@ -68,7 +68,7 @@ public class CategoryUseCase {
       );
   }
 
-  public Category updateCategoryById(final UpdateCategoryRequest request) {
+  public Category updateCategory(final UpdateCategoryRequest request) {
     var imagesLength = Objects.isNull(request.getImages()) ? null : request.getImages().size();
     this.validateCategoryConstraints(imagesLength, request.getName());
 
@@ -102,7 +102,7 @@ public class CategoryUseCase {
     );
   }
 
-  public void deleteCategoryById(final DeleteCategoryByIdRequest request) {
+  public void deleteCategoryById(final DeleteCategoryRequest request) {
     if (!this.dao.existCategoryById(request.getCategoryId())) {
       throw new NotFoundException("Category not found");
     }
