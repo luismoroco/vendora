@@ -1,0 +1,10 @@
+input GetProductsInput {
+    name: String
+    enabled: Boolean
+    featured: Boolean
+    categoryIds: [Int]
+    minPrice: Float
+    maxPrice: Float
+    page: Int!
+    size: Int!
+}

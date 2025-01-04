@@ -1,0 +1,10 @@
+input CreateProductInput {
+    name: String!
+    description: String!
+    price: Float!
+    enabled: Boolean!
+    featured: Boolean!
+    stock: Int!
+    categoryIds: [Int]!
+    images: [ProductImageInput]!
+}

@@ -1,0 +1,10 @@
+type Query {
+    # Category
+    getCategories(input: GetCategoriesInput!): [Category]
+    getCategoryById(categoryId: Int!): Category
+
+    # Product
+    getProducts(input: GetProductsInput!): [Product]
+
+
+}

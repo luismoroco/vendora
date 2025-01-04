@@ -1,0 +1,13 @@
+type Product {
+    productId: ID!
+    name: String!
+    description: String!
+    price: Float!
+    enabled: Boolean!
+    archived: Boolean!
+    featured: Boolean!
+    stock: Int!
+
+    images: [ProductImage]!
+    categories: [Category]!
+}

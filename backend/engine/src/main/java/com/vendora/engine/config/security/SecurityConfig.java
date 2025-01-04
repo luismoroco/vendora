@@ -3,7 +3,6 @@ package com.vendora.engine.config.security;
 import com.vendora.engine.config.security.filters.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -43,8 +42,7 @@ public class SecurityConfig {
           //.requestMatchers(HttpMethod.POST, AUTH_ROUTES).permitAll()
           //.requestMatchers(HttpMethod.GET, PUBLIC_ROUTES).permitAll()
           //.requestMatchers(HttpMethod.POST, WEBHOOK_ROUTES).permitAll()
-          //.requestMatchers(HttpMethod.GET, GRAPH_QL).permitAll()
-          //.requestMatchers(HttpMethod.POST, GRAPH_QL).permitAll()
+          //.requestMatchers(GRAPH_QL).permitAll()
           //.requestMatchers(PRIVATE_ROUTES).authenticated()
           .anyRequest().permitAll()
         )

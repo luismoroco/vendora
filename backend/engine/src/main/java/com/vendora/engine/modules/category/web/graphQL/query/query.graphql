@@ -1,4 +1,0 @@
-type Query {
-    getCategories(input: GetCategoriesInput!): [Category]
-    getCategoryById(categoryId: Int!): Category
-}

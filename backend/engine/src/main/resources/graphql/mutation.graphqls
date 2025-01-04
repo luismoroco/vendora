@@ -1,0 +1,12 @@
+type Mutation {
+    # Category
+    createCategory(input: CreateCategoryInput!): Category
+    updateCategoryById(input: UpdateCategoryInput!, categoryId: Int!): Category
+    deleteCategoryById(categoryId: Int!): Boolean
+
+    # Product
+    createProduct(input: CreateProductInput!): Product
+    updateProduct(input: UpdateProductInput!, productId: Int!): Product
+    deleteProductById(productId: Int!): Boolean
+    putLikeProduct(productId: Int!): Boolean
+}

@@ -1,5 +1,0 @@
-type Mutation {
-    createCategory(input: CreateCategoryInput!): Category
-    updateCategoryById(input: UpdateCategoryInput!, categoryId: Int!): Category
-    deleteCategoryById(categoryId: Int!): Boolean
-}

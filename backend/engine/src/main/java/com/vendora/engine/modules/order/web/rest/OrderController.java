@@ -4,18 +4,16 @@ import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.order.OrderUseCase;
 import com.vendora.engine.modules.order.model.Order;
+import com.vendora.engine.modules.order.presenter.OrderPresenter;
 import com.vendora.engine.modules.order.web.rest.validator.CreateOrderRestRequest;
 import com.vendora.engine.modules.order.web.rest.validator.GetOrdersRestRequest;
 import com.vendora.engine.modules.order.web.rest.validator.UpdateOrderRestRequest;
-import com.vendora.engine.modules.shopping_cart.ShoppingCartUseCase;
-import com.vendora.engine.modules.shopping_cart.request.UpdateShoppingCartRequest;
 import com.vendora.engine.modules.user.model.UserType;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +24,17 @@ import java.util.Map;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
   private final OrderUseCase useCase;
-  private final ShoppingCartUseCase shoppingCartUseCase; // TODO: use a event broker instead
   private final Scrooge<? extends Credentials> scrooge;
+  private final OrderPresenter presenter;
 
   public OrderController(
     OrderUseCase useCase,
-    ShoppingCartUseCase shoppingCartUseCase,
-    @Qualifier("Jwt") Scrooge<? extends Credentials> scrooge
+    @Qualifier("Jwt") Scrooge<? extends Credentials> scrooge,
+    @Qualifier("kafka") OrderPresenter presenter
   ) {
     this.useCase = useCase;
-    this.shoppingCartUseCase = shoppingCartUseCase;
     this.scrooge = scrooge;
+    this.presenter = presenter;
   }
 
   @PostMapping("")
@@ -50,7 +48,7 @@ public class OrderController {
       Map.of("userId", this.scrooge.retrieveKeys().getUserId())
     ));
 
-    this.notifyOrderCreated();
+    this.presenter.notifyOrderCreated(order.getOrderId(), order.getUserId());
 
     return ResponseEntity.status(HttpStatus.OK).body(order);
   }
@@ -81,13 +79,5 @@ public class OrderController {
     ));
 
     return ResponseEntity.status(HttpStatus.OK).body(order);
-  }
-
-  @Async
-  protected void notifyOrderCreated() {
-    var cleanShoppingCartRequest = new UpdateShoppingCartRequest();
-    cleanShoppingCartRequest.setUserId(this.scrooge.retrieveKeys().getUserId());
-    cleanShoppingCartRequest.setItems(List.of());
-    this.shoppingCartUseCase.updateShoppingCart(cleanShoppingCartRequest);
   }
 }

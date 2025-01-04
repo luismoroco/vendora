@@ -25,7 +25,7 @@ public class ShoppingCartEntity implements ModelAdapter<ShoppingCart> {
   @NotNull
   private Long userId;
 
-  @OneToMany(mappedBy = "shoppingCart", cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "shoppingCart", cascade = {CascadeType.ALL}, orphanRemoval = true)
   private Set<ShoppingCartItemEntity> items;
 
   @Override

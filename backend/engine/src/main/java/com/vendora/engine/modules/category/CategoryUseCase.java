@@ -111,19 +111,15 @@ public class CategoryUseCase {
   }
 
   private void validateCategoryConstraints(Integer imagesLength, String categoryName) {
-    if (Objects.nonNull(imagesLength)) {
-      if (imagesLength > MAX_IMAGES_PER_CATEGORY) {
-        throw new BadRequestException(
-          "Category images exceeded [imagesLength=%d][maxAllowed=%d]"
-            .formatted(imagesLength, MAX_IMAGES_PER_CATEGORY)
-        );
-      }
+    if (Objects.nonNull(imagesLength) && imagesLength > MAX_IMAGES_PER_CATEGORY) {
+      throw new BadRequestException(
+        "Category images exceeded [imagesLength=%d][maxAllowed=%d]"
+          .formatted(imagesLength, MAX_IMAGES_PER_CATEGORY)
+      );
     }
 
-    if (Objects.nonNull(categoryName)) {
-      if (this.dao.existCategoryByName(categoryName)) {
-        throw new BadRequestException("Category already exists");
-      }
+    if (Objects.nonNull(categoryName) && this.dao.existCategoryByName(categoryName)) {
+      throw new BadRequestException("Category already exists");
     }
   }
 }

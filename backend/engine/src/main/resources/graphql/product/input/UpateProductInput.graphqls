@@ -1,0 +1,10 @@
+input UpdateProductInput {
+    name: String
+    description: String
+    price: Float
+    enabled: Boolean
+    featured: Boolean
+    archived: Boolean
+    stock: Int
+    images: [ProductImageInput]
+}
