@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.payment.web.rest;
+package com.vendora.engine.modules.payment.web.api.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import com.vendora.engine.modules.payment.PaymentUseCase;
 import com.vendora.engine.modules.payment.model.Payment;
 import com.vendora.engine.modules.payment.presenter.PaymentPresenter;
 import com.vendora.engine.modules.payment.request.CompleteStripePaymentRequest;
-import com.vendora.engine.modules.payment.web.rest.validator.InitializeStripePaymentRestRequest;
+import com.vendora.engine.modules.payment.web.validator.InitializeStripePaymentWebRequest;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ public class PaymentController {
   @PostMapping("/stripe/initialize")
   @PreAuthorize("hasRole('CLIENT')")
   public ResponseEntity<Payment> initializeStripeCheckout(
-    @Valid @RequestBody final InitializeStripePaymentRestRequest payload
+    @Valid @RequestBody final InitializeStripePaymentWebRequest payload
   ) {
     this.scrooge.setContext();
 

@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.payment.web.rest.validator;
+package com.vendora.engine.modules.payment.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.payment.request.InitializeStripePaymentRequest;
@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.URL;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InitializeStripePaymentRestRequest implements RequestAdapter<InitializeStripePaymentRequest> {
+public class InitializeStripePaymentWebRequest implements RequestAdapter<InitializeStripePaymentRequest> {
   @NotNull
   @URL
   private String redirectUrl;

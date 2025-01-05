@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.shopping_cart.web.rest.validator;
+package com.vendora.engine.modules.shopping_cart.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.shopping_cart.request.ShoppingCartItemRequest;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingCartItemRestRequest implements RequestAdapter<ShoppingCartItemRequest> {
+public class ShoppingCartItemWebRequest implements RequestAdapter<ShoppingCartItemRequest> {
   @NotNull
   private Long productId;
 

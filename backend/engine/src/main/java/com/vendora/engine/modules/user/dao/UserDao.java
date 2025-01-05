@@ -12,4 +12,6 @@ public interface UserDao {
   User saveUser(User user);
 
   Optional<User> findUserByEmail(String email);
+
+  Optional<User> findUserById(Long userId);
 }

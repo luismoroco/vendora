@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.shopping_cart.web.rest.validator;
+package com.vendora.engine.modules.shopping_cart.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.shopping_cart.request.UpdateShoppingCartRequest;
@@ -14,9 +14,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateShoppingCartRestRequest implements RequestAdapter<UpdateShoppingCartRequest> {
+public class UpdateShoppingCartWebRequest implements RequestAdapter<UpdateShoppingCartRequest> {
   @NotNull
-  private List<ShoppingCartItemRestRequest> items;
+  private List<ShoppingCartItemWebRequest> items;
 
   @Override
   public Class<UpdateShoppingCartRequest> getTargetClass() {

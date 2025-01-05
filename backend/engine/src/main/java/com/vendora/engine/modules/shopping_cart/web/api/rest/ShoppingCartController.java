@@ -1,11 +1,11 @@
-package com.vendora.engine.modules.shopping_cart.web.rest;
+package com.vendora.engine.modules.shopping_cart.web.api.rest;
 
 import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.shopping_cart.ShoppingCartUseCase;
 import com.vendora.engine.modules.shopping_cart.model.ShoppingCart;
 import com.vendora.engine.modules.shopping_cart.request.GetShoppingCartRequest;
-import com.vendora.engine.modules.shopping_cart.web.rest.validator.UpdateShoppingCartRestRequest;
+import com.vendora.engine.modules.shopping_cart.web.validator.UpdateShoppingCartWebRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class ShoppingCartController {
   @PutMapping("")
   @PreAuthorize("hasRole('CLIENT')")
   public ResponseEntity<ShoppingCart> updateShoppingCart(
-    @Valid @RequestBody final UpdateShoppingCartRestRequest payload
+    @Valid @RequestBody final UpdateShoppingCartWebRequest payload
   ) {
     this.scrooge.setContext();
 

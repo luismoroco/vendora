@@ -71,4 +71,14 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     properties:
       spring.json.trusted.packages: '*'
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: lmorocoramos@gmail.com
+    password: MOROCCO153
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

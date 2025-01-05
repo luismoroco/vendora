@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.order.web.rest.validator;
+package com.vendora.engine.modules.order.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.currency.model.Currency;
@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetOrdersRestRequest implements RequestAdapter<GetOrdersRequest> {
+public class GetOrdersWebRequest implements RequestAdapter<GetOrdersRequest> {
   @Nullable
   private OrderStatusType orderStatusType;
 

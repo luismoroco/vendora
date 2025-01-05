@@ -1,13 +1,13 @@
-package com.vendora.engine.modules.order.web.rest;
+package com.vendora.engine.modules.order.web.api.rest;
 
 import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.order.OrderUseCase;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.presenter.OrderPresenter;
-import com.vendora.engine.modules.order.web.rest.validator.CreateOrderRestRequest;
-import com.vendora.engine.modules.order.web.rest.validator.GetOrdersRestRequest;
-import com.vendora.engine.modules.order.web.rest.validator.UpdateOrderRestRequest;
+import com.vendora.engine.modules.order.web.validator.CreateOrderWebRequest;
+import com.vendora.engine.modules.order.web.validator.GetOrdersWebRequest;
+import com.vendora.engine.modules.order.web.validator.UpdateOrderWebRequest;
 import com.vendora.engine.modules.user.model.UserType;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,7 +40,7 @@ public class OrderController {
   @PostMapping("")
   @PreAuthorize("hasRole('CLIENT')")
   public ResponseEntity<Order> createOrder(
-    @Valid @RequestBody final CreateOrderRestRequest payload
+    @Valid @RequestBody final CreateOrderWebRequest payload
   ) {
     this.scrooge.setContext();
 
@@ -55,7 +55,7 @@ public class OrderController {
 
   @GetMapping("")
   @PreAuthorize("hasAnyRole('CLIENT', 'MANAGER')")
-  public ResponseEntity<Page<Order>> getOrders(@Valid final GetOrdersRestRequest payload) {
+  public ResponseEntity<Page<Order>> getOrders(@Valid final GetOrdersWebRequest payload) {
     this.scrooge.setContext();
 
     var request = payload.buildRequest();
@@ -71,7 +71,7 @@ public class OrderController {
   @PutMapping("/{orderId}")
   @PreAuthorize("hasRole('MANAGER')")
   public ResponseEntity<Order> updateOrder(
-    @Valid @RequestBody final UpdateOrderRestRequest payload,
+    @Valid @RequestBody final UpdateOrderWebRequest payload,
     @PathVariable final Long orderId
   ) {
     var order = this.useCase.updateOrder(payload.buildRequest(

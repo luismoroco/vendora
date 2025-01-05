@@ -44,4 +44,9 @@ public class UserDaoPg implements UserDao {
   public Optional<User> findUserByEmail(String email) {
     return this.repository.findByEmail(email).map(UserEntity::toModel);
   }
+
+  @Override
+  public Optional<User> findUserById(Long userId) {
+    return this.repository.findById(userId).map(UserEntity::toModel);
+  }
 }
