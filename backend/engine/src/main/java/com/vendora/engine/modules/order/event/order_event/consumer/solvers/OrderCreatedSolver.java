@@ -1,7 +1,7 @@
-package com.vendora.engine.modules.order.event.order_event.consumer.actions;
+package com.vendora.engine.modules.order.event.order_event.consumer.solvers;
 
-import com.vendora.engine.modules.order.event.order_event.OrderEvent;
 import com.vendora.engine.common.event.EventSolver;
+import com.vendora.engine.modules.order.event.order_event.OrderEvent;
 import com.vendora.engine.modules.shopping_cart.ShoppingCartUseCase;
 import com.vendora.engine.modules.shopping_cart.request.UpdateShoppingCartRequest;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,7 @@ import java.util.List;
 public class OrderCreatedSolver implements EventSolver<OrderEvent> {
   private final ShoppingCartUseCase shoppingCartUseCase;
 
-  public OrderCreatedSolver(
-    ShoppingCartUseCase shoppingCartUseCase
-  ) {
+  public OrderCreatedSolver(ShoppingCartUseCase shoppingCartUseCase) {
     this.shoppingCartUseCase = shoppingCartUseCase;
   }
 

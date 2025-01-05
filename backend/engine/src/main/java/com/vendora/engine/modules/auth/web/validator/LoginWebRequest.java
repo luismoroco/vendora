@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.auth.web.rest.validator;
+package com.vendora.engine.modules.auth.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.auth.request.LoginRequest;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRestRequest implements RequestAdapter<LoginRequest> {
+public class LoginWebRequest implements RequestAdapter<LoginRequest> {
   @NotBlank(message = "Email cannot be missing or empty")
   @Email(message = "Must be a well-formed email address")
   private String username;

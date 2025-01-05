@@ -1,4 +1,4 @@
-package com.vendora.engine.modules.auth.web.rest.validator;
+package com.vendora.engine.modules.auth.web.validator;
 
 import com.vendora.engine.common.request.RequestAdapter;
 import com.vendora.engine.modules.auth.request.SignUpRequest;
@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRestRequest implements RequestAdapter<SignUpRequest> {
+public class SignUpWebRequest implements RequestAdapter<SignUpRequest> {
   @NotNull
   private UserType userType;
 

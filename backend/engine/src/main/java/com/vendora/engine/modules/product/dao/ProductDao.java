@@ -36,4 +36,6 @@ public interface ProductDao {
   void deleteProductLikesById(List<Long> productLikeIds);
 
   List<Product> getProductsById(List<Long> productIds);
+
+  int bulkUpdateProductsByIds(List<Long> productIds, Integer stock);
 }

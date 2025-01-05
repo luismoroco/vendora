@@ -1,31 +1,28 @@
 package com.vendora.engine.modules.order.presenter.providers;
 
-import com.vendora.engine.modules.order.event.OrderEventType;
-import com.vendora.engine.modules.order.event.order_event.OrderEvent;
-import com.vendora.engine.modules.order.event.order_event.emitter.OrderEventEmitter;
 import com.vendora.engine.modules.order.presenter.OrderPresenter;
+import com.vendora.engine.modules.shopping_cart.event.ShoppingCartEventType;
+import com.vendora.engine.modules.shopping_cart.event.shopping_cart_event.ShoppingCartEvent;
+import com.vendora.engine.modules.shopping_cart.event.shopping_cart_event.emitter.ShoppingCartEventEmitter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @Qualifier("kafka")
 public class KafkaOrderPresenter implements OrderPresenter {
-  private final OrderEventEmitter emitter;
+  private final ShoppingCartEventEmitter shoppingCartEventEmitter;
 
-  public KafkaOrderPresenter(
-    @Qualifier("kafka") OrderEventEmitter emitter
-  ) {
-    this.emitter = emitter;
+  public KafkaOrderPresenter(@Qualifier("kafka") ShoppingCartEventEmitter shoppingCartEventEmitter) {
+    this.shoppingCartEventEmitter = shoppingCartEventEmitter;
   }
 
   @Override
   public void notifyOrderCreated(Long orderId, Long userId) {
-    var event = OrderEvent.builder()
-      .orderId(orderId)
-      .userId(userId)
-      .orderEventType(OrderEventType.ORDER_CREATED)
-      .build();
-
-    this.emitter.emit(event);
+    this.shoppingCartEventEmitter.emit(
+      ShoppingCartEvent.builder()
+        .shoppingCartEventType(ShoppingCartEventType.EMPTY_SHOPPING_CART)
+        .userId(userId)
+        .build()
+    );
   }
 }

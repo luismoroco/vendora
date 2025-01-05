@@ -39,4 +39,9 @@ public class UserDaoPg implements UserDao {
     var userEntity = mapper.map(user, UserEntity.class);
     return this.repository.save(userEntity).toModel();
   }
+
+  @Override
+  public Optional<User> findUserByEmail(String email) {
+    return this.repository.findByEmail(email).map(UserEntity::toModel);
+  }
 }

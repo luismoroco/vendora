@@ -1,8 +1,8 @@
 package com.vendora.engine.modules.order.event.order_event.consumer.providers;
 
+import com.vendora.engine.common.event.EventSolver;
 import com.vendora.engine.modules.order.event.order_event.OrderEvent;
 import com.vendora.engine.modules.order.event.order_event.consumer.OrderEventConsumer;
-import com.vendora.engine.common.event.EventSolver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

@@ -5,6 +5,7 @@ import com.vendora.engine.modules.order.dao.OrderDao;
 import com.vendora.engine.modules.order.model.Order;
 import com.vendora.engine.modules.order.model.OrderStatusType;
 import com.vendora.engine.modules.order.request.CreateOrderRequest;
+import com.vendora.engine.modules.order.request.GetOrderByIdRequest;
 import com.vendora.engine.modules.order.request.GetOrdersRequest;
 import com.vendora.engine.modules.order.request.UpdateOrderRequest;
 import com.vendora.engine.modules.order.sub_modules.OrderBuilder;
@@ -68,5 +69,12 @@ public class OrderUseCase {
     }
 
     return this.dao.saverOrder(order);
+  }
+
+  public Order getOrderById(final GetOrderByIdRequest request) {
+    return this.dao.getOrderById(request.getOrderId())
+      .orElseThrow(
+        () -> new NotFoundException("Order not found")
+      );
   }
 }

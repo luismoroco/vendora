@@ -120,7 +120,7 @@ public class ProductUseCase {
     }
 
     if (Objects.nonNull(request.getStock())) {
-      product.setStock(request.getStock());
+      product.setStock(product.getStock() + request.getStock());
     }
 
     if (Objects.nonNull(request.getImages())) {
@@ -152,20 +152,20 @@ public class ProductUseCase {
     }
   }
 
+  public void bulkUpdateProducts(final BulkUpdateProductsRequest request) {
+    this.dao.bulkUpdateProductsByIds(request.getProductIds(), request.getStock());
+  }
+
   private void validateProductConstraints(Integer imagesLength, String productName) {
-    if (Objects.nonNull(imagesLength)) {
-      if (imagesLength > MAX_IMAGES_PER_PRODUCT) {
-        throw new BadRequestException(
-          "Product images exceeded [imagesLength=%d][maxAllowed=%d]"
-            .formatted(imagesLength, MAX_IMAGES_PER_PRODUCT)
-        );
-      }
+    if (Objects.nonNull(imagesLength) && imagesLength > MAX_IMAGES_PER_PRODUCT) {
+      throw new BadRequestException(
+        "Product images exceeded [imagesLength=%d][maxAllowed=%d]"
+          .formatted(imagesLength, MAX_IMAGES_PER_PRODUCT)
+      );
     }
 
-    if (Objects.nonNull(productName)) {
-      if (this.dao.existProductByName(productName)) {
-        throw new BadRequestException("Product already exists");
-      }
+    if (Objects.nonNull(productName) && this.dao.existProductByName(productName)) {
+      throw new BadRequestException("Product already exists");
     }
   }
 }

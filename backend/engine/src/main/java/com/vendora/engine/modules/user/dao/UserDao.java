@@ -10,4 +10,6 @@ public interface UserDao {
   boolean userExistByUsername(String username);
 
   User saveUser(User user);
+
+  Optional<User> findUserByEmail(String email);
 }

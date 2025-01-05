@@ -1,10 +1,11 @@
-package com.vendora.engine.modules.auth.web.rest;
+package com.vendora.engine.modules.auth.web.api.rest;
 
 import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.auth.AuthUseCase;
-import com.vendora.engine.modules.auth.web.rest.validator.LoginRestRequest;
-import com.vendora.engine.modules.auth.web.rest.validator.SignUpRestRequest;
+import com.vendora.engine.modules.auth.web.validator.LoginWebRequest;
+import com.vendora.engine.modules.auth.web.validator.PasswordRecoveryWebRequest;
+import com.vendora.engine.modules.auth.web.validator.SignUpWebRequest;
 import com.vendora.engine.modules.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +34,7 @@ public class AuthController {
 
   @PostMapping("/log-in")
   public ResponseEntity<? extends Credentials> logInUser(
-    @Valid @RequestBody final LoginRestRequest payload
+    @Valid @RequestBody final LoginWebRequest payload
   ) {
     this.authenticate(payload);
 
@@ -43,21 +44,30 @@ public class AuthController {
 
   @PostMapping("/sign-up")
   public ResponseEntity<? extends Credentials> signUp(
-    @Valid @RequestBody final SignUpRestRequest payload
+    @Valid @RequestBody final SignUpWebRequest payload
   ) {
     var user = this.useCase.signUp(payload.buildRequest());
     return this.performAuthorization(user);
   }
 
   @PutMapping("/log-out")
-  public ResponseEntity<?> logOut() {
+  public ResponseEntity<Void> logOut() {
     this.scrooge.setContext();
 
     this.scrooge.destroyKeys();
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  private void authenticate(LoginRestRequest payload) {
+  @PostMapping("/password-recovery")
+  public ResponseEntity<Void> passwordRecovery(
+    @Valid @RequestBody final PasswordRecoveryWebRequest payload
+  ) {
+    this.useCase.passwordRecovery(payload.buildRequest());
+
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  private void authenticate(LoginWebRequest payload) {
     var auth = new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword());
     authManager.authenticate(auth);
   }

@@ -7,6 +7,7 @@ import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.common.web.webhook.Webhook;
 import com.vendora.engine.modules.payment.PaymentUseCase;
 import com.vendora.engine.modules.payment.model.Payment;
+import com.vendora.engine.modules.payment.presenter.PaymentPresenter;
 import com.vendora.engine.modules.payment.request.CompleteStripePaymentRequest;
 import com.vendora.engine.modules.payment.web.rest.validator.InitializeStripePaymentRestRequest;
 import com.vendora.engine.modules.payment_provider.model.PaymentProvider;
@@ -31,15 +32,18 @@ public class PaymentController {
   private final PaymentUseCase useCase;
   private final Scrooge<? extends Credentials> scrooge;
   private final ObjectMapper objectMapper;
+  private final PaymentPresenter presenter;
 
   public PaymentController(
     PaymentUseCase useCase,
     @Qualifier("Jwt") Scrooge<? extends Credentials> scrooge,
-    ObjectMapper objectMapper
+    ObjectMapper objectMapper,
+    @Qualifier("kafka") PaymentPresenter presenter
   ) {
     this.useCase = useCase;
     this.scrooge = scrooge;
     this.objectMapper = objectMapper;
+    this.presenter = presenter;
   }
 
   @PostMapping("/stripe/initialize")
@@ -78,7 +82,7 @@ public class PaymentController {
 
     var payment = this.useCase.completeStripePayment(request);
     if (payment.isPaid()) {
-      // logic
+      this.presenter.notifyPaymentPaid(payment.getPaymentId(), payment.getOrder().getOrderId());
     }
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

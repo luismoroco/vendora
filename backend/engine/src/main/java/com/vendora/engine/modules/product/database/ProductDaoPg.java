@@ -106,4 +106,9 @@ public class ProductDaoPg implements ProductDao {
       .map(ProductEntity::toModel)
       .toList();
   }
+
+  @Override
+  public int bulkUpdateProductsByIds(List<Long> productIds, Integer stock) {
+    return this.repository.bulkUpdateProductsById(productIds, stock);
+  }
 }
