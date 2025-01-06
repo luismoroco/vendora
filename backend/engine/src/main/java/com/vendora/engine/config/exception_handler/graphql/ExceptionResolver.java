@@ -1,4 +1,4 @@
-package com.vendora.engine.config.exception_handler.graphQL;
+package com.vendora.engine.config.exception_handler.graphql;
 
 import com.vendora.engine.common.error.exc.exception.BadRequestException;
 import com.vendora.engine.common.error.exc.exception.NotFoundException;
