@@ -2,6 +2,7 @@ package com.vendora.engine.kafka.model;
 
 import lombok.Getter;
 
+@Getter
 public enum KafkaTopic {
   ORDERS(1, (short) 1),
   MESSAGES(1, (short) 1),
@@ -9,9 +10,7 @@ public enum KafkaTopic {
   PRODUCT(1, (short) 1),
   NOTIFICATION(1, (short) 1);
 
-  @Getter
   final int numPartitions;
-  @Getter
   final short replicationFactor;
 
   KafkaTopic(int numPartitions, short replicationFactor) {

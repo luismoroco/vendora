@@ -22,9 +22,9 @@ import java.util.function.Function;
 public class JwtService {
   private static final String BEARER_AUTH_PREFIX = "Bearer ";
   @Value("${application.security.jwt.secret-key}")
-  private String SECRET_KEY;
+  private String secretKey;
   @Value("${application.security.jwt.expiration}")
-  private Long JWT_EXPIRATION;
+  private Long jwtExpiration;
 
   public static Optional<String> getBearerToken(String header) {
     if (StringUtils.hasText(header) && header.startsWith(BEARER_AUTH_PREFIX)) {
@@ -35,7 +35,7 @@ public class JwtService {
   }
 
   private Key getSignInKey() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(this.secretKey));
   }
 
   public String buildToken(String subject) {
@@ -43,7 +43,7 @@ public class JwtService {
       .setClaims(new HashMap<>())
       .setSubject(subject)
       .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+      .setExpiration(new Date(System.currentTimeMillis() + this.jwtExpiration))
       .signWith(this.getSignInKey(), SignatureAlgorithm.HS256)
       .compact();
   }

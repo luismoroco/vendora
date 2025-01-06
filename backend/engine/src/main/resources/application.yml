@@ -20,6 +20,8 @@ application:
       secret-key: sk_test_51PGRVWHzhyleeX7zIIlCOa9wo3oV4G7EZ9kmKIZibIi5D4Qm8yLG2roELDfdXcw78Yit68umn8Hd4cBhSlQ4TZzN00nnbIFCAy
       webhook-id: we_1PWirZHzhyleeX7zV7FWMIKe
       url: https://api.stripe.com/v1
+  host:
+    url: http://localhost:8080
 
 spring:
   application:
@@ -75,10 +77,11 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: lmorocoramos@gmail.com
-    password: MOROCCO153
+    password: ajsa loxg nuiq vhhn
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+    protocol: smtp

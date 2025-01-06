@@ -19,17 +19,17 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
   @Value("${spring.data.redis.duration}")
-  private Integer DURATION;
+  private Integer duration;
 
   @Value("${spring.data.redis.host}")
-  private String HOST;
+  private String host;
 
   @Value("${spring.data.redis.port}")
-  private Integer PORT;
+  private Integer port;
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
-    var factory = new LettuceConnectionFactory(HOST, PORT);
+    var factory = new LettuceConnectionFactory(this.host, this.port);
     factory.setValidateConnection(true);
     return factory;
   }
@@ -37,7 +37,7 @@ public class RedisConfig {
   @Bean
   public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
     var configuration = RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader())
-      .entryTtl(Duration.ofHours(DURATION))
+      .entryTtl(Duration.ofHours(this.duration))
       .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
       .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 

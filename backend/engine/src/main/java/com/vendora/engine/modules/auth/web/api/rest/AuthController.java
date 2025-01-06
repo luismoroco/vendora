@@ -4,7 +4,8 @@ import com.vendora.engine.common.scrooge.Credentials;
 import com.vendora.engine.common.scrooge.providers.Scrooge;
 import com.vendora.engine.modules.auth.AuthUseCase;
 import com.vendora.engine.modules.auth.web.validator.LoginWebRequest;
-import com.vendora.engine.modules.auth.web.validator.PasswordRecoveryWebRequest;
+import com.vendora.engine.modules.auth.web.validator.InitPasswordRecoveryWebRequest;
+import com.vendora.engine.modules.auth.web.validator.PerformPasswordRecoveryWebRequest;
 import com.vendora.engine.modules.auth.web.validator.SignUpWebRequest;
 import com.vendora.engine.modules.user.model.User;
 import jakarta.validation.Valid;
@@ -60,9 +61,18 @@ public class AuthController {
 
   @PostMapping("/password-recovery")
   public ResponseEntity<Void> passwordRecovery(
-    @Valid @RequestBody final PasswordRecoveryWebRequest payload
+    @Valid @RequestBody final InitPasswordRecoveryWebRequest payload
   ) {
-    this.useCase.passwordRecovery(payload.buildRequest());
+    this.useCase.initPasswordRecovery(payload.buildRequest());
+
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @PutMapping("/password-recovery")
+  public ResponseEntity<Void> performPasswordRecovery(
+    @Valid @RequestBody final PerformPasswordRecoveryWebRequest payload
+  ) {
+    this.useCase.performPasswordRecovery(payload.buildRequest());
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
